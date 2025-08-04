@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Battler</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <h1>Robot Battler</h1>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Gold:</span>
+                    <span id="gold-display" class="stat-value">100</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Wins:</span>
+                    <span id="wins-display" class="stat-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Menu Screen -->
+        <div id="main-menu" class="game-screen active">
+            <div class="robot-display">
+                <div id="player-robot" class="robot">
+                    <div class="robot-chassis"></div>
+                    <div class="robot-weapon"></div>
+                    <div class="robot-armor"></div>
+                    <div class="robot-engine"></div>
+                </div>
+                <div class="robot-stats">
+                    <h3>Your Robot</h3>
+                    <div class="stat-grid">
+                        <div class="stat-row">
+                            <span>Health:</span>
+                            <span id="player-health-stat">50</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Attack:</span>
+                            <span id="player-attack-stat">20</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Defense:</span>
+                            <span id="player-defense-stat">8</span>
+                        </div>
+                        <div class="stat-row">
+                            <span>Speed:</span>
+                            <span id="player-speed-stat">10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-actions">
+                <button id="battle-btn" class="btn btn--primary btn--lg">Battle</button>
+                <button id="shop-btn" class="btn btn--secondary btn--lg">Parts Shop</button>
+            </div>
+        </div>
+
+        <!-- Enemy Selection Screen -->
+        <div id="enemy-selection" class="game-screen">
+            <h2>Choose Your Opponent</h2>
+            <div class="enemy-grid">
+                <div class="enemy-card" data-enemy="0">
+                    <div class="enemy-robot scrap-bot"></div>
+                    <h3>Scrap Bot</h3>
+                    <div class="enemy-stats">
+                        <div class="stat-row"><span>HP:</span> <span>50</span></div>
+                        <div class="stat-row"><span>ATK:</span> <span>15</span></div>
+                        <div class="stat-row"><span>DEF:</span> <span>5</span></div>
+                        <div class="stat-row"><span>SPD:</span> <span>10</span></div>
+                    </div>
+                    <div class="enemy-reward">Reward: 25 Gold</div>
+                    <button class="btn btn--primary btn--full-width fight-btn">Fight</button>
+                </div>
+                <div class="enemy-card" data-enemy="1">
+                    <div class="enemy-robot guard-bot"></div>
+                    <h3>Guard Bot</h3>
+                    <div class="enemy-stats">
+                        <div class="stat-row"><span>HP:</span> <span>80</span></div>
+                        <div class="stat-row"><span>ATK:</span> <span>25</span></div>
+                        <div class="stat-row"><span>DEF:</span> <span>12</span></div>
+                        <div class="stat-row"><span>SPD:</span> <span>15</span></div>
+                    </div>
+                    <div class="enemy-reward">Reward: 50 Gold</div>
+                    <button class="btn btn--primary btn--full-width fight-btn">Fight</button>
+                </div>
+                <div class="enemy-card" data-enemy="2">
+                    <div class="enemy-robot war-bot"></div>
+                    <h3>War Bot</h3>
+                    <div class="enemy-stats">
+                        <div class="stat-row"><span>HP:</span> <span>120</span></div>
+                        <div class="stat-row"><span>ATK:</span> <span>35</span></div>
+                        <div class="stat-row"><span>DEF:</span> <span>20</span></div>
+                        <div class="stat-row"><span>SPD:</span> <span>12</span></div>
+                    </div>
+                    <div class="enemy-reward">Reward: 100 Gold</div>
+                    <button class="btn btn--primary btn--full-width fight-btn">Fight</button>
+                </div>
+                <div class="enemy-card" data-enemy="3">
+                    <div class="enemy-robot titan-bot"></div>
+                    <h3>Titan Bot</h3>
+                    <div class="enemy-stats">
+                        <div class="stat-row"><span>HP:</span> <span>200</span></div>
+                        <div class="stat-row"><span>ATK:</span> <span>50</span></div>
+                        <div class="stat-row"><span>DEF:</span> <span>30</span></div>
+                        <div class="stat-row"><span>SPD:</span> <span>8</span></div>
+                    </div>
+                    <div class="enemy-reward">Reward: 200 Gold</div>
+                    <button class="btn btn--primary btn--full-width fight-btn">Fight</button>
+                </div>
+            </div>
+            <button id="back-to-menu" class="btn btn--secondary">Back to Menu</button>
+        </div>
+
+        <!-- Combat Screen -->
+        <div id="combat-screen" class="game-screen">
+            <div class="combat-arena">
+                <div class="combatant player-side">
+                    <div id="combat-player-robot" class="robot combat-robot">
+                        <div class="robot-chassis"></div>
+                        <div class="robot-weapon"></div>
+                        <div class="robot-armor"></div>
+                        <div class="robot-engine"></div>
+                    </div>
+                    <div class="health-bar">
+                        <div class="health-bar-fill" id="player-health-bar"></div>
+                        <span class="health-text" id="player-health-text">50/50</span>
+                    </div>
+                    <h3>Your Robot</h3>
+                </div>
+                <div class="combat-vs">VS</div>
+                <div class="combatant enemy-side">
+                    <div id="combat-enemy-robot" class="robot combat-robot">
+                        <div class="robot-chassis"></div>
+                        <div class="robot-weapon"></div>
+                        <div class="robot-armor"></div>
+                        <div class="robot-engine"></div>
+                    </div>
+                    <div class="health-bar">
+                        <div class="health-bar-fill" id="enemy-health-bar"></div>
+                        <span class="health-text" id="enemy-health-text">50/50</span>
+                    </div>
+                    <h3 id="enemy-name">Enemy Robot</h3>
+                </div>
+            </div>
+            <div class="combat-controls">
+                <button id="attack-btn" class="btn btn--primary btn--lg">Attack</button>
+                <button id="defend-btn" class="btn btn--secondary btn--lg">Defend</button>
+                <button id="special-btn" class="btn btn--outline btn--lg">Special</button>
+            </div>
+            <div id="battle-log" class="battle-log">
+                <h4>Battle Log</h4>
+                <div id="log-messages" class="log-messages"></div>
+            </div>
+        </div>
+
+        <!-- Parts Shop Screen -->
+        <div id="parts-shop" class="game-screen">
+            <h2>Parts Shop</h2>
+            <div class="shop-tabs">
+                <button class="tab-btn active" data-category="chassis">Chassis</button>
+                <button class="tab-btn" data-category="weapons">Weapons</button>
+                <button class="tab-btn" data-category="armor">Armor</button>
+                <button class="tab-btn" data-category="engines">Engines</button>
+            </div>
+            <div id="parts-grid" class="parts-grid">
+                <!-- Parts will be generated by JavaScript -->
+            </div>
+            <button id="back-to-menu-shop" class="btn btn--secondary">Back to Menu</button>
+        </div>
+
+        <!-- Battle Result Screen -->
+        <div id="battle-result" class="game-screen">
+            <div class="result-content">
+                <h2 id="result-title">Victory!</h2>
+                <div id="result-message" class="result-message">
+                    You defeated the enemy robot!
+                </div>
+                <div id="gold-earned" class="gold-earned">
+                    +50 Gold
+                </div>
+                <button id="continue-btn" class="btn btn--primary btn--lg">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

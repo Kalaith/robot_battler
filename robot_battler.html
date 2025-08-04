@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Battler</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #00ffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            text-shadow: 0 0 20px #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #00ffff;
+            margin: 5px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .robot-display {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .robot-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .robot {
+            font-size: 4em;
+            margin: 20px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .robot-stats {
+            position: relative;
+            z-index: 2;
+        }
+
+        .health-bar {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #00ffff;
+        }
+
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ffaa00, #44ff44);
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(68, 255, 68, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5);
+            background: linear-gradient(45deg, #00e6e6, #0066ff);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .shop {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ffff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .shop h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .shop-item {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .shop-item:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .shop-item h3 {
+            color: #ffaa00;
+            margin-bottom: 10px;
+        }
+
+        .log {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .log::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .log::-webkit-scrollbar-track {
+            background: #333;
+        }
+
+        .log::-webkit-scrollbar-thumb {
+            background: #00ffff;
+            border-radius: 4px;
+        }
+
+        .damage {
+            color: #ff4444;
+        }
+
+        .heal {
+            color: #44ff44;
+        }
+
+        .gold {
+            color: #ffaa00;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hit {
+            animation: hit 0.3s ease;
+        }
+
+        @keyframes hit {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 ROBOT BATTLER 🤖</h1>
+            <div class="stats">
+                <div class="stat">
+                    <div>💰 Gold</div>
+                    <div id="gold">100</div>
+                </div>
+                <div class="stat">
+                    <div>⚔️ Wins</div>
+                    <div id="wins">0</div>
+                </div>
+                <div class="stat">
+                    <div>🏆 Level</div>
+                    <div id="level">1</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="robot-display">
+                <h3>Your Robot</h3>
+                <div class="robot" id="playerRobot">🤖</div>
+                <div class="robot-stats">
+                    <div>HP: <span id="playerHP">100</span>/<span id="playerMaxHP">100</span></div>
+                    <div class="health-bar">
+                        <div class="health-fill" id="playerHealthBar" style="width: 100%"></div>
+                    </div>
+                    <div>⚔️ Attack: <span id="playerAttack">20</span></div>
+                    <div>🛡️ Defense: <span id="playerDefense">5</span></div>
+                    <div>⚡ Speed: <span id="playerSpeed">10</span></div>
+                </div>
+            </div>
+
+            <div class="robot-display">
+                <h3>Enemy Robot</h3>
+                <div class="robot" id="enemyRobot">🤖</div>
+                <div class="robot-stats">
+                    <div>HP: <span id="enemyHP">80</span>/<span id="enemyMaxHP">80</span></div>
+                    <div class="health-bar">
+                        <div class="health-fill" id="enemyHealthBar" style="width: 100%"></div>
+                    </div>
+                    <div>⚔️ Attack: <span id="enemyAttack">15</span></div>
+                    <div>🛡️ Defense: <span id="enemyDefense">3</span></div>
+                    <div>⚡ Speed: <span id="enemySpeed">8</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="attackBtn" onclick="playerAttack()">⚔️ Attack</button>
+            <button class="btn" id="defendBtn" onclick="playerDefend()">🛡️ Defend</button>
+            <button class="btn" id="repairBtn" onclick="playerRepair()">🔧 Repair</button>
+            <button class="btn" id="newEnemyBtn" onclick="generateNewEnemy()" style="display: none;">Next Enemy</button>
+        </div>
+
+        <div class="log" id="battleLog"></div>
+
+        <div class="shop">
+            <h2>🛠️ Robot Upgrade Shop</h2>
+            <div class="shop-items">
+                <div class="shop-item">
+                    <h3>🔋 Power Core</h3>
+                    <p>+20 Max HP</p>
+                    <p class="gold">Cost: 50 Gold</p>
+                    <button class="btn" onclick="buyUpgrade('hp', 20, 50)">Buy</button>
+                </div>
+                <div class="shop-item">
+                    <h3>⚔️ Plasma Cannon</h3>
+                    <p>+10 Attack Power</p>
+                    <p class="gold">Cost: 75 Gold</p>
+                    <button class="btn" onclick="buyUpgrade('attack', 10, 75)">Buy</button>
+                </div>
+                <div class="shop-item">
+                    <h3>🛡️ Armor Plating</h3>
+                    <p>+5 Defense</p>
+                    <p class="gold">Cost: 60 Gold</p>
+                    <button class="btn" onclick="buyUpgrade('defense', 5, 60)">Buy</button>
+                </div>
+                <div class="shop-item">
+                    <h3>⚡ Turbo Engine</h3>
+                    <p>+5 Speed</p>
+                    <p class="gold">Cost: 40 Gold</p>
+                    <button class="btn" onclick="buyUpgrade('speed', 5, 40)">Buy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game state
+        let gameState = {
+            player: {
+                hp: 100,
+                maxHp: 100,
+                attack: 20,
+                defense: 5,
+                speed: 10,
+                defending: false
+            },
+            enemy: {
+                hp: 80,
+                maxHp: 80,
+                attack: 15,
+                defense: 3,
+                speed: 8
+            },
+            gold: 100,
+            wins: 0,
+            level: 1,
+            battleActive: true,
+            upgradeCosts: {
+                hp: 50,
+                attack: 75,
+                defense: 60,
+                speed: 40
+            }
+        };
+
+        // Robot emojis for variety
+        const robotEmojis = ['🤖', '🦾', '🦿', '⚙️', '🔧', '🔩', '⚡', '🛡️'];
+
+        function updateShopDisplay() {
+            const shopItems = document.querySelectorAll('.shop-item');
+            shopItems[0].innerHTML = `
+                <h3>🔋 Power Core</h3>
+                <p>+20 Max HP</p>
+                <p class="gold">Cost: ${gameState.upgradeCosts.hp} Gold</p>
+                <button class="btn" onclick="buyUpgrade('hp', 20, ${gameState.upgradeCosts.hp})">Buy</button>
+            `;
+            shopItems[1].innerHTML = `
+                <h3>⚔️ Plasma Cannon</h3>
+                <p>+10 Attack Power</p>
+                <p class="gold">Cost: ${gameState.upgradeCosts.attack} Gold</p>
+                <button class="btn" onclick="buyUpgrade('attack', 10, ${gameState.upgradeCosts.attack})">Buy</button>
+            `;
+            shopItems[2].innerHTML = `
+                <h3>🛡️ Armor Plating</h3>
+                <p>+5 Defense</p>
+                <p class="gold">Cost: ${gameState.upgradeCosts.defense} Gold</p>
+                <button class="btn" onclick="buyUpgrade('defense', 5, ${gameState.upgradeCosts.defense})">Buy</button>
+            `;
+            shopItems[3].innerHTML = `
+                <h3>⚡ Turbo Engine</h3>
+                <p>+5 Speed</p>
+                <p class="gold">Cost: ${gameState.upgradeCosts.speed} Gold</p>
+                <button class="btn" onclick="buyUpgrade('speed', 5, ${gameState.upgradeCosts.speed})">Buy</button>
+            `;
+        }
+            // Player stats
+            document.getElementById('playerHP').textContent = gameState.player.hp;
+            document.getElementById('playerMaxHP').textContent = gameState.player.maxHp;
+            document.getElementById('playerAttack').textContent = gameState.player.attack;
+            document.getElementById('playerDefense').textContent = gameState.player.defense;
+            document.getElementById('playerSpeed').textContent = gameState.player.speed;
+            
+            // Enemy stats
+            document.getElementById('enemyHP').textContent = gameState.enemy.hp;
+            document.getElementById('enemyMaxHP').textContent = gameState.enemy.maxHp;
+            document.getElementById('enemyAttack').textContent = gameState.enemy.attack;
+            document.getElementById('enemyDefense').textContent = gameState.enemy.defense;
+            document.getElementById('enemySpeed').textContent = gameState.enemy.speed;
+            
+            // Health bars
+            const playerHealthPercent = (gameState.player.hp / gameState.player.maxHp) * 100;
+            const enemyHealthPercent = (gameState.enemy.hp / gameState.enemy.maxHp) * 100;
+            document.getElementById('playerHealthBar').style.width = playerHealthPercent + '%';
+            document.getElementById('enemyHealthBar').style.width = enemyHealthPercent + '%';
+            
+            // Global stats
+            document.getElementById('gold').textContent = gameState.gold;
+            document.getElementById('wins').textContent = gameState.wins;
+            document.getElementById('level').textContent = gameState.level;
+            
+            // Update shop prices
+            updateShopDisplay();
+        }
+
+        function log(message, className = '') {
+            const logElement = document.getElementById('battleLog');
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = message;
+            if (className) messageElement.className = className;
+            logElement.appendChild(messageElement);
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function calculateDamage(attacker, defender) {
+            const baseDamage = attacker.attack;
+            const defense = defender.defending ? defender.defense * 2 : defender.defense;
+            const damage = Math.max(1, baseDamage - defense + Math.floor(Math.random() * 10) - 5);
+            return damage;
+        }
+
+        function playerAttack() {
+            if (!gameState.battleActive) return;
+            
+            gameState.player.defending = false;
+            const damage = calculateDamage(gameState.player, gameState.enemy);
+            gameState.enemy.hp = Math.max(0, gameState.enemy.hp - damage);
+            
+            log(`🤖 You attack for <span class="damage">${damage} damage</span>!`);
+            document.getElementById('enemyRobot').classList.add('hit');
+            setTimeout(() => document.getElementById('enemyRobot').classList.remove('hit'), 300);
+            
+            if (gameState.enemy.hp <= 0) {
+                victory();
+                return;
+            }
+            
+            setTimeout(enemyTurn, 1000);
+            updateDisplay();
+        }
+
+        function playerDefend() {
+            if (!gameState.battleActive) return;
+            
+            gameState.player.defending = true;
+            log(`🛡️ You raise your defenses!`);
+            document.getElementById('playerRobot').classList.add('pulse');
+            setTimeout(() => document.getElementById('playerRobot').classList.remove('pulse'), 500);
+            
+            setTimeout(enemyTurn, 1000);
+        }
+
+        function playerRepair() {
+            if (!gameState.battleActive) return;
+            
+            gameState.player.defending = false;
+            const healAmount = Math.floor(gameState.player.maxHp * 0.25);
+            gameState.player.hp = Math.min(gameState.player.maxHp, gameState.player.hp + healAmount);
+            
+            log(`🔧 You repair for <span class="heal">${healAmount} HP</span>!`);
+            document.getElementById('playerRobot').classList.add('pulse');
+            setTimeout(() => document.getElementById('playerRobot').classList.remove('pulse'), 500);
+            
+            setTimeout(enemyTurn, 1000);
+            updateDisplay();
+        }
+
+        function enemyTurn() {
+            if (!gameState.battleActive) return;
+            
+            // Simple AI: attack if player HP > 50%, defend if low on health
+            const action = Math.random();
+            
+            if (gameState.enemy.hp < gameState.enemy.maxHp * 0.3 && action < 0.3) {
+                // Enemy repairs
+                const healAmount = Math.floor(gameState.enemy.maxHp * 0.2);
+                gameState.enemy.hp = Math.min(gameState.enemy.maxHp, gameState.enemy.hp + healAmount);
+                log(`🔧 Enemy repairs for <span class="heal">${healAmount} HP</span>!`);
+                document.getElementById('enemyRobot').classList.add('pulse');
+                setTimeout(() => document.getElementById('enemyRobot').classList.remove('pulse'), 500);
+            } else {
+                // Enemy attacks
+                const damage = calculateDamage(gameState.enemy, gameState.player);
+                gameState.player.hp = Math.max(0, gameState.player.hp - damage);
+                
+                const defenseText = gameState.player.defending ? ' (defended)' : '';
+                log(`🔥 Enemy attacks for <span class="damage">${damage} damage</span>${defenseText}!`);
+                document.getElementById('playerRobot').classList.add('hit');
+                setTimeout(() => document.getElementById('playerRobot').classList.remove('hit'), 300);
+            }
+            
+            gameState.player.defending = false;
+            
+            if (gameState.player.hp <= 0) {
+                defeat();
+                return;
+            }
+            
+            updateDisplay();
+        }
+
+        function victory() {
+            gameState.battleActive = false;
+            gameState.wins++;
+            const goldEarned = 30 + (gameState.level * 10) + Math.floor(Math.random() * 20);
+            gameState.gold += goldEarned;
+            
+            // Small repair after victory
+            const repairAmount = Math.floor(gameState.player.maxHp * 0.1);
+            gameState.player.hp = Math.min(gameState.player.maxHp, gameState.player.hp + repairAmount);
+            
+            log(`🎉 <span class="heal">VICTORY!</span> You earned <span class="gold">${goldEarned} gold</span>!`);
+            if (repairAmount > 0) {
+                log(`🔧 Your robot auto-repairs for <span class="heal">${repairAmount} HP</span>!`);
+            }
+            
+            // Level up every 3 wins
+            if (gameState.wins % 3 === 0) {
+                gameState.level++;
+                log(`🏆 <span class="heal">LEVEL UP!</span> You are now level ${gameState.level}!`);
+            }
+            
+            document.getElementById('newEnemyBtn').style.display = 'inline-block';
+            document.getElementById('attackBtn').disabled = true;
+            document.getElementById('defendBtn').disabled = true;
+            document.getElementById('repairBtn').disabled = true;
+            
+            updateDisplay();
+        }
+
+        function defeat() {
+            gameState.battleActive = false;
+            log(`💀 <span class="damage">DEFEAT!</span> Your robot was destroyed!`);
+            
+            // Reset player HP but keep upgrades
+            gameState.player.hp = gameState.player.maxHp;
+            
+            document.getElementById('newEnemyBtn').style.display = 'inline-block';
+            document.getElementById('attackBtn').disabled = true;
+            document.getElementById('defendBtn').disabled = true;
+            document.getElementById('repairBtn').disabled = true;
+            
+            updateDisplay();
+        }
+
+        function generateNewEnemy() {
+            // Scale enemy based on player level
+            const baseStats = {
+                hp: 60 + (gameState.level * 15),
+                attack: 12 + (gameState.level * 3),
+                defense: 2 + Math.floor(gameState.level / 2),
+                speed: 6 + gameState.level
+            };
+            
+            // Add some randomness
+            gameState.enemy = {
+                hp: baseStats.hp + Math.floor(Math.random() * 20),
+                maxHp: baseStats.hp + Math.floor(Math.random() * 20),
+                attack: baseStats.attack + Math.floor(Math.random() * 6),
+                defense: baseStats.defense + Math.floor(Math.random() * 3),
+                speed: baseStats.speed + Math.floor(Math.random() * 4)
+            };
+            
+            gameState.enemy.hp = gameState.enemy.maxHp;
+            gameState.battleActive = true;
+            
+            // Change enemy appearance
+            const enemyRobotEl = document.getElementById('enemyRobot');
+            enemyRobotEl.textContent = robotEmojis[Math.floor(Math.random() * robotEmojis.length)];
+            
+            document.getElementById('newEnemyBtn').style.display = 'none';
+            document.getElementById('attackBtn').disabled = false;
+            document.getElementById('defendBtn').disabled = false;
+            document.getElementById('repairBtn').disabled = false;
+            
+            log(`🚨 A new enemy robot appears! Level ${gameState.level} difficulty.`);
+            updateDisplay();
+        }
+
+        function buyUpgrade(stat, amount, cost) {
+            if (gameState.gold < cost) {
+                log(`❌ Not enough gold! Need ${cost} gold.`);
+                return;
+            }
+            
+            gameState.gold -= cost;
+            
+            // Increase the cost for next purchase (25% more expensive)
+            gameState.upgradeCosts[stat] = Math.floor(gameState.upgradeCosts[stat] * 1.25);
+            
+            switch(stat) {
+                case 'hp':
+                    gameState.player.maxHp += amount;
+                    gameState.player.hp += amount; // Also heal current HP
+                    log(`💊 <span class="heal">Power Core installed!</span> +${amount} Max HP`);
+                    break;
+                case 'attack':
+                    gameState.player.attack += amount;
+                    log(`⚔️ <span class="heal">Plasma Cannon installed!</span> +${amount} Attack`);
+                    break;
+                case 'defense':
+                    gameState.player.defense += amount;
+                    log(`🛡️ <span class="heal">Armor Plating installed!</span> +${amount} Defense`);
+                    break;
+                case 'speed':
+                    gameState.player.speed += amount;
+                    log(`⚡ <span class="heal">Turbo Engine installed!</span> +${amount} Speed`);
+                    break;
+            }
+            
+            updateDisplay();
+        }
+
+        // Initialize game
+        log('🤖 Welcome to Robot Battler! Defeat enemies to earn gold and upgrade your robot!');
+        log('⚔️ Use Attack to deal damage, Defend to reduce incoming damage, or Repair to heal!');
+        updateDisplay();
+    </script>
+</body>
+</html>
