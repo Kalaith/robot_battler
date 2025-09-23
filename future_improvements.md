@@ -15,15 +15,15 @@
 10. **AI Difficulty Scaling**: Advanced AI with multiple difficulty levels and learning patterns
 
 ## Customization & Progression
-11. **Visual Robot Builder**: Drag-and-drop 3D robot assembly with real-time visual feedback
+11. **Visual Robot Builder**: Drag-and-drop 2D robot assembly interface with component preview
 12. **Paint & Decals**: Customize robot appearance with colors, patterns, and sponsor decals
 13. **Modular Upgrades**: Individual part upgrades with visual progression and stat improvements
-14. **Blueprint System**: Save and share robot designs with the community
+14. **Blueprint System**: Save and export robot designs as JSON files for backup
 15. **Salvage & Crafting**: Break down defeated robots for parts and craft custom components
 
 ## Advanced Features
-16. **Multiplayer Battles**: Real-time PvP battles with matchmaking and ranking systems
-17. **League System**: Seasonal leagues with rewards and promotion/demotion mechanics
-18. **Workshop Integration**: Community-created parts and modifications with voting system
+16. **AI Tournament Battles**: Structured AI tournament system with ranking progression
+17. **Championship System**: Seasonal AI championships with rewards and difficulty progression
+18. **Custom Parts System**: Design custom robot parts with statistical balance and visual customization
 19. **Campaign Mode**: Story-driven single-player campaign with boss battles and narrative
-20. **Mobile App**: Cross-platform mobile version with account sync and touch-optimized controls
+20. **Progressive Web App**: Mobile-responsive design with touch controls and local data sync
