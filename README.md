@@ -15,3 +15,9 @@ Turn-based robot combat game featuring customizable mechs, strategic battles, an
 
 ## Deployment
 This is a static web project. All files are served directly from the root folder.
+
+## License
+
+This project is licensed under the MIT License - see the individual component README files for details.
+
+Part of the WebHatchery game collection.
