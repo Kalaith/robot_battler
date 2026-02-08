@@ -1,11 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { RobotPart, ShopCategory } from '../../types';
+import { Armor, Chassis, Engine, RobotPart, ShopCategory, Weapon } from '../../types';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 
+type PartByCategory = {
+  chassis: Chassis;
+  weapons: Weapon;
+  armor: Armor;
+  engines: Engine;
+};
+
 interface PartCardProps {
-  part: RobotPart & Record<string, any>;
+  part: PartByCategory[ShopCategory];
   category: ShopCategory;
   index: number;
   isOwned: boolean;
@@ -23,7 +30,7 @@ export const PartCard: React.FC<PartCardProps> = ({
   canAfford,
   onAction
 }) => {
-  const getTierColor = (tier: string) => {
+  const getTierColor = (tier: RobotPart['tier']) => {
     switch (tier.toLowerCase()) {
       case 'basic': return 'bg-gray-100 text-gray-800 border-gray-300';
       case 'enhanced': return 'bg-green-100 text-green-800 border-green-300';
@@ -55,10 +62,10 @@ export const PartCard: React.FC<PartCardProps> = ({
 
   const getStatValue = () => {
     switch (category) {
-      case 'chassis': return part['health'];
-      case 'weapons': return part['attack'];
-      case 'armor': return part['defense'];
-      case 'engines': return part['speed'];
+      case 'chassis': return (part as Chassis).health;
+      case 'weapons': return (part as Weapon).attack;
+      case 'armor': return (part as Armor).defense;
+      case 'engines': return (part as Engine).speed;
       default: return 0;
     }
   };

@@ -54,7 +54,9 @@ export const Tournament: React.FC = () => {
     }
   ] as const;
 
-  const handleStartTournament = (type: 'rookie' | 'veteran' | 'champion') => {
+  type TournamentTypeId = (typeof tournamentTypes)[number]['id'];
+
+  const handleStartTournament = (type: TournamentTypeId) => {
     startTournament(type);
     setScreen('enemy-selection'); // Reuse enemy selection but with tournament context
   };
@@ -217,7 +219,7 @@ export const Tournament: React.FC = () => {
                 <Button
                   variant="primary"
                   fullWidth
-                  onClick={() => handleStartTournament(tournament.id as any)}
+                  onClick={() => handleStartTournament(tournament.id)}
                 >
                   Enter Tournament
                 </Button>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../stores/gameStore';
 import { useCombatStore } from '../stores/combatStore';
@@ -74,7 +74,7 @@ export const Combat: React.FC = () => {
         handleContinue();
       }, 3000);
     }
-  }, [playerHealth, enemyHealth, isActive, endBattle, addGold, addWin, addNotification]);
+  }, [playerHealth, enemyHealth, isActive, endBattle, addGold, addWin, addNotification, handleContinue]);
 
   const handlePlayerAttack = () => {
     if (turn !== 'player' || !isActive) return;
@@ -103,11 +103,11 @@ export const Combat: React.FC = () => {
     }, 3000);
   };
 
-  const handleContinue = () => {
+  const handleContinue = useCallback(() => {
     resetCombat();
     setBattleResult(null);
     setScreen('main-menu');
-  };
+  }, [resetCombat, setScreen]);
 
   if (!currentEnemy) {
     return (

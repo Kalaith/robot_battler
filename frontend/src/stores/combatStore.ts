@@ -2,6 +2,10 @@ import { create } from 'zustand';
 import { CombatState, Enemy, BattleLogEntry, DamageResult, PlayerStats } from '../types';
 import { gameData } from '../data/gameData';
 
+interface DefenderStats {
+  defense: number;
+}
+
 interface CombatStore extends CombatState {
   // Actions
   startBattle: (enemy: Enemy, playerStats: PlayerStats) => void;
@@ -12,7 +16,7 @@ interface CombatStore extends CombatState {
   enemyTurn: (playerStats: PlayerStats) => DamageResult | null;
   addBattleLog: (entry: BattleLogEntry) => void;
   clearBattleLog: () => void;
-  calculateDamage: (attackerStats: any, defenderStats: any, baseAttack: number) => DamageResult;
+  calculateDamage: (attackerStats: unknown, defenderStats: DefenderStats, baseAttack: number) => DamageResult;
   resetCombat: () => void;
 }
 
@@ -141,7 +145,8 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
 
   clearBattleLog: () => set({ battleLog: [] }),
 
-  calculateDamage: (_attackerStats, defenderStats, baseAttack) => {
+  calculateDamage: (attackerStats, defenderStats, baseAttack) => {
+    void attackerStats; // attacker currently doesn't affect damage beyond baseAttack
     const variance = 1 + (Math.random() - 0.5) * 2 * gameData.game_balance.damage_variance;
     const criticalHit = Math.random() < gameData.game_balance.critical_hit_chance;
     const critMultiplier = criticalHit ? 2 : 1;
