@@ -5,12 +5,12 @@ import App from './App';
 describe('App', () => {
   it('renders without crashing', () => {
     render(<App />);
-    expect(screen.getByText('Kingdom Wars')).toBeDefined();
+    expect(screen.getByText(/your robot/i)).toBeInTheDocument();
   });
   
   it('renders the kingdom creation form', () => {
     render(<App />);
-    expect(screen.getByText('Create Your Kingdom')).toBeDefined();
-    expect(screen.getByLabelText('Kingdom Name')).toBeDefined();
+    expect(screen.getByText(/what would you like to do/i)).toBeInTheDocument();
+    expect(screen.getByText(/quick battle/i)).toBeInTheDocument();
   });
 });
