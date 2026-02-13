@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '../stores/gameStore';
@@ -38,6 +39,12 @@ export const Combat: React.FC = () => {
   const [isEnemyAnimating, setIsEnemyAnimating] = useState(false);
 
   const playerStats = getPlayerStats();
+
+  const handleContinue = useCallback(() => {
+    resetCombat();
+    setBattleResult(null);
+    setScreen('main-menu');
+  }, [resetCombat, setScreen]);
 
   // Handle enemy turns
   useEffect(() => {
@@ -115,12 +122,6 @@ export const Combat: React.FC = () => {
       setSpecialCooldown(false);
     }, 3000);
   };
-
-  const handleContinue = useCallback(() => {
-    resetCombat();
-    setBattleResult(null);
-    setScreen('main-menu');
-  }, [resetCombat, setScreen]);
 
   if (!currentEnemy) {
     return (
