@@ -6,11 +6,11 @@
 }
 
 .scrollbar-thumb-gray-400 {
-  scrollbar-color: #9CA3AF transparent;
+  scrollbar-color: #9ca3af transparent;
 }
 
 .scrollbar-track-gray-100 {
-  scrollbar-color: #F3F4F6 transparent;
+  scrollbar-color: #f3f4f6 transparent;
 }
 
 /* Webkit scrollbar styles for Chrome/Safari */
@@ -19,22 +19,23 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
-  background: #F3F4F6;
+  background: #f3f4f6;
   border-radius: 3px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: #9CA3AF;
+  background: #9ca3af;
   border-radius: 3px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #6B7280;
+  background: #6b7280;
 }
 
 /* Custom animations */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
   }
   50% {
@@ -47,9 +48,23 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-  20%, 40%, 60%, 80% { transform: translateX(2px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-2px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(2px);
+  }
 }
 
 .shake {
@@ -66,18 +81,36 @@
 }
 
 @keyframes attack-animation {
-  0% { transform: translateX(0) scale(1); }
-  30% { transform: translateX(10px) scale(1.1); }
-  60% { transform: translateX(-5px) scale(1.05); }
-  100% { transform: translateX(0) scale(1); }
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  30% {
+    transform: translateX(10px) scale(1.1);
+  }
+  60% {
+    transform: translateX(-5px) scale(1.05);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
 }
 
 @keyframes damage-animation {
-  0% { transform: translateX(0) brightness(1); }
-  25% { transform: translateX(-5px) brightness(1.5); }
-  50% { transform: translateX(5px) brightness(0.7); }
-  75% { transform: translateX(-3px) brightness(1.3); }
-  100% { transform: translateX(0) brightness(1); }
+  0% {
+    transform: translateX(0) brightness(1);
+  }
+  25% {
+    transform: translateX(-5px) brightness(1.5);
+  }
+  50% {
+    transform: translateX(5px) brightness(0.7);
+  }
+  75% {
+    transform: translateX(-3px) brightness(1.3);
+  }
+  100% {
+    transform: translateX(0) brightness(1);
+  }
 }
 
 /* Particle effects */

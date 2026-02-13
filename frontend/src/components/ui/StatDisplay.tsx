@@ -13,15 +13,15 @@ export const StatDisplay: React.FC<StatDisplayProps> = ({
   value,
   icon,
   size = 'md',
-  highlight = false
+  highlight = false,
 }) => {
   const sizeClasses = {
     sm: 'text-sm',
     md: 'text-base',
-    lg: 'text-lg'
+    lg: 'text-lg',
   };
 
-  const valueClasses = highlight 
+  const valueClasses = highlight
     ? 'text-blue-600 font-bold'
     : 'text-gray-800 font-semibold';
 

@@ -7,7 +7,7 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText(/your robot/i)).toBeInTheDocument();
   });
-  
+
   it('renders the kingdom creation form', () => {
     render(<App />);
     expect(screen.getByText(/what would you like to do/i)).toBeInTheDocument();

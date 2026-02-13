@@ -11,7 +11,8 @@ import { ShopCategory } from '../types';
 
 export const PartsShop: React.FC = () => {
   const { gold, player, setScreen, buyPart, equipPart } = useGameStore();
-  const { activeShopCategory, setActiveShopCategory, addNotification } = useUIStore();
+  const { activeShopCategory, setActiveShopCategory, addNotification } =
+    useUIStore();
 
   const categories: { key: ShopCategory; label: string; icon: string }[] = [
     { key: 'chassis', label: 'Chassis', icon: '🤖' },
@@ -24,17 +25,17 @@ export const PartsShop: React.FC = () => {
     const isOwned = player.ownedParts[category].includes(index);
     const isEquipped = player[category] === index;
     const part = gameData.robot_parts[category][index];
-    
+
     if (!part || isEquipped) {
       return; // Already equipped or invalid part
     }
-    
+
     if (isOwned) {
       // Equip the part
       equipPart(category, index);
       addNotification({
         message: `Equipped ${part.name}!`,
-        type: 'success'
+        type: 'success',
       });
     } else {
       // Try to buy the part
@@ -43,12 +44,12 @@ export const PartsShop: React.FC = () => {
         equipPart(category, index);
         addNotification({
           message: `Bought and equipped ${part.name}!`,
-          type: 'success'
+          type: 'success',
         });
       } else {
         addNotification({
           message: 'Not enough gold!',
-          type: 'error'
+          type: 'error',
         });
       }
     }
@@ -84,9 +85,10 @@ export const PartsShop: React.FC = () => {
             🔧 Parts Shop
           </h1>
           <p className="text-lg text-gray-600 mb-4">
-            Upgrade your robot with better parts to increase your battle performance!
+            Upgrade your robot with better parts to increase your battle
+            performance!
           </p>
-          
+
           {/* Gold Display */}
           <Card className="inline-block bg-yellow-50 border-yellow-200">
             <StatDisplay
@@ -118,16 +120,18 @@ export const PartsShop: React.FC = () => {
                   className={`
                     px-6 py-3 rounded-lg font-bold text-lg transition-all duration-200
                     flex items-center gap-2
-                    ${activeShopCategory === category.key
-                      ? 'bg-blue-600 text-white shadow-lg transform scale-105'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ${
+                      activeShopCategory === category.key
+                        ? 'bg-blue-600 text-white shadow-lg transform scale-105'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }
                   `}
                 >
                   <span className="text-xl">{category.icon}</span>
                   <span>{category.label}</span>
                   <span className="text-sm opacity-75">
-                    ({getOwnedCount(category.key)}/{gameData.robot_parts[category.key].length})
+                    ({getOwnedCount(category.key)}/
+                    {gameData.robot_parts[category.key].length})
                   </span>
                 </motion.button>
               ))}
@@ -156,7 +160,11 @@ export const PartsShop: React.FC = () => {
               />
               <StatDisplay
                 label="Current Equipped"
-                value={gameData.robot_parts[activeShopCategory][player[activeShopCategory]]?.name || 'None'}
+                value={
+                  gameData.robot_parts[activeShopCategory][
+                    player[activeShopCategory]
+                  ]?.name || 'None'
+                }
                 icon="✨"
               />
             </div>

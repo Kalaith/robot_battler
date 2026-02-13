@@ -10,7 +10,7 @@ import { gameData } from '../data/gameData';
 export const MainMenu: React.FC = () => {
   const { gold, wins, player, getPlayerStats, setScreen } = useGameStore();
   const playerStats = getPlayerStats();
-  
+
   const getCurrentTier = () => {
     const chassis = gameData.robot_parts.chassis[player.chassis];
     return chassis?.tier || 'Basic';
@@ -47,15 +47,15 @@ export const MainMenu: React.FC = () => {
         >
           <Card className="mb-8">
             <div className="flex justify-center gap-8">
-              <StatDisplay 
-                label="Gold" 
+              <StatDisplay
+                label="Gold"
                 value={gold}
                 icon={<span className="text-yellow-500">🪙</span>}
                 size="lg"
                 highlight
               />
-              <StatDisplay 
-                label="Wins" 
+              <StatDisplay
+                label="Wins"
                 value={wins}
                 icon={<span className="text-green-500">🏆</span>}
                 size="lg"
@@ -76,9 +76,9 @@ export const MainMenu: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 Your Robot
               </h2>
-              
+
               <div className="mb-6">
-                <RobotDisplay 
+                <RobotDisplay
                   stats={playerStats}
                   tier={getCurrentTier()}
                   size="lg"
@@ -86,10 +86,26 @@ export const MainMenu: React.FC = () => {
               </div>
 
               <div className="space-y-3">
-                <StatDisplay label="Health" value={playerStats.health} icon="❤️" />
-                <StatDisplay label="Attack" value={playerStats.attack} icon="⚔️" />
-                <StatDisplay label="Defense" value={playerStats.defense} icon="🛡️" />
-                <StatDisplay label="Speed" value={playerStats.speed} icon="⚡" />
+                <StatDisplay
+                  label="Health"
+                  value={playerStats.health}
+                  icon="❤️"
+                />
+                <StatDisplay
+                  label="Attack"
+                  value={playerStats.attack}
+                  icon="⚔️"
+                />
+                <StatDisplay
+                  label="Defense"
+                  value={playerStats.defense}
+                  icon="🛡️"
+                />
+                <StatDisplay
+                  label="Speed"
+                  value={playerStats.speed}
+                  icon="⚡"
+                />
               </div>
             </Card>
           </motion.div>
@@ -105,7 +121,7 @@ export const MainMenu: React.FC = () => {
               <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">
                 What would you like to do?
               </h3>
-              
+
               <div className="space-y-4">
                 <Button
                   variant="primary"
@@ -115,7 +131,7 @@ export const MainMenu: React.FC = () => {
                 >
                   ⚔️ Quick Battle
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   size="lg"
@@ -124,7 +140,7 @@ export const MainMenu: React.FC = () => {
                 >
                   🏆 Tournament Mode
                 </Button>
-                
+
                 <Button
                   variant="secondary"
                   size="lg"

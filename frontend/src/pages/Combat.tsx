@@ -25,11 +25,15 @@ export const Combat: React.FC = () => {
     playerSpecial,
     enemyTurn,
     endBattle,
-    resetCombat
+    resetCombat,
   } = useCombatStore();
-  
-  const { isSpecialOnCooldown, setSpecialCooldown, addNotification } = useUIStore();
-  const [battleResult, setBattleResult] = useState<{ victory: boolean; goldEarned: number } | null>(null);
+
+  const { isSpecialOnCooldown, setSpecialCooldown, addNotification } =
+    useUIStore();
+  const [battleResult, setBattleResult] = useState<{
+    victory: boolean;
+    goldEarned: number;
+  } | null>(null);
   const [isPlayerAnimating, setIsPlayerAnimating] = useState(false);
   const [isEnemyAnimating, setIsEnemyAnimating] = useState(false);
 
@@ -54,18 +58,18 @@ export const Combat: React.FC = () => {
       const victory = enemyHealth <= 0;
       const result = endBattle(victory);
       setBattleResult(result);
-      
+
       if (victory) {
         addGold(result.goldEarned);
         addWin();
         addNotification({
           message: `Victory! You earned ${result.goldEarned} gold!`,
-          type: 'success'
+          type: 'success',
         });
       } else {
         addNotification({
           message: 'Defeat! Try upgrading your robot.',
-          type: 'error'
+          type: 'error',
         });
       }
 
@@ -74,11 +78,20 @@ export const Combat: React.FC = () => {
         handleContinue();
       }, 3000);
     }
-  }, [playerHealth, enemyHealth, isActive, endBattle, addGold, addWin, addNotification, handleContinue]);
+  }, [
+    playerHealth,
+    enemyHealth,
+    isActive,
+    endBattle,
+    addGold,
+    addWin,
+    addNotification,
+    handleContinue,
+  ]);
 
   const handlePlayerAttack = () => {
     if (turn !== 'player' || !isActive) return;
-    
+
     setIsPlayerAnimating(true);
     playerAttack(playerStats);
     setTimeout(() => setIsPlayerAnimating(false), 600);
@@ -86,17 +99,17 @@ export const Combat: React.FC = () => {
 
   const handlePlayerDefend = () => {
     if (turn !== 'player' || !isActive) return;
-    
+
     playerDefend();
   };
 
   const handlePlayerSpecial = () => {
     if (turn !== 'player' || !isActive || isSpecialOnCooldown) return;
-    
+
     setIsPlayerAnimating(true);
     playerSpecial(playerStats);
     setSpecialCooldown(true);
-    
+
     setTimeout(() => {
       setIsPlayerAnimating(false);
       setSpecialCooldown(false);
@@ -121,11 +134,16 @@ export const Combat: React.FC = () => {
 
   const getEnemyTier = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
-      case 'easy': return 'Basic';
-      case 'medium': return 'Enhanced';
-      case 'hard': return 'Advanced';
-      case 'elite': return 'Elite';
-      default: return 'Basic';
+      case 'easy':
+        return 'Basic';
+      case 'medium':
+        return 'Enhanced';
+      case 'hard':
+        return 'Advanced';
+      case 'elite':
+        return 'Elite';
+      default:
+        return 'Basic';
     }
   };
 
@@ -168,19 +186,25 @@ export const Combat: React.FC = () => {
               {/* VS Section */}
               <div className="text-center">
                 <motion.div
-                  animate={{ 
+                  animate={{
                     scale: [1, 1.1, 1],
-                    textShadow: ['0 0 10px #ff0000', '0 0 20px #ff0000', '0 0 10px #ff0000']
+                    textShadow: [
+                      '0 0 10px #ff0000',
+                      '0 0 20px #ff0000',
+                      '0 0 10px #ff0000',
+                    ],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="text-6xl font-bold text-red-400 mb-4"
                 >
                   VS
                 </motion.div>
-                
-                <div className={`text-lg font-medium ${
-                  turn === 'player' ? 'text-blue-400' : 'text-red-400'
-                }`}>
+
+                <div
+                  className={`text-lg font-medium ${
+                    turn === 'player' ? 'text-blue-400' : 'text-red-400'
+                  }`}
+                >
                   {turn === 'player' ? 'Your Turn' : 'Enemy Turn'}
                 </div>
               </div>
@@ -193,7 +217,7 @@ export const Combat: React.FC = () => {
                     health: currentEnemy.health,
                     attack: currentEnemy.attack,
                     defense: currentEnemy.defense,
-                    speed: currentEnemy.speed
+                    speed: currentEnemy.speed,
                   }}
                   tier={getEnemyTier(currentEnemy.difficulty)}
                   size="lg"
@@ -223,7 +247,7 @@ export const Combat: React.FC = () => {
               <h3 className="text-xl font-bold mb-6 text-center text-white">
                 Combat Actions
               </h3>
-              
+
               <div className="space-y-4">
                 <Button
                   variant="primary"
@@ -234,7 +258,7 @@ export const Combat: React.FC = () => {
                 >
                   ⚔️ Attack ({playerStats.attack} damage)
                 </Button>
-                
+
                 <Button
                   variant="secondary"
                   size="lg"
@@ -244,15 +268,18 @@ export const Combat: React.FC = () => {
                 >
                   🛡️ Defend (Heal 10%)
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   size="lg"
                   fullWidth
-                  disabled={turn !== 'player' || !isActive || isSpecialOnCooldown}
+                  disabled={
+                    turn !== 'player' || !isActive || isSpecialOnCooldown
+                  }
                   onClick={handlePlayerSpecial}
                 >
-                  ⚡ Special Attack {isSpecialOnCooldown ? '(Cooldown)' : '(1.5x damage)'}
+                  ⚡ Special Attack{' '}
+                  {isSpecialOnCooldown ? '(Cooldown)' : '(1.5x damage)'}
                 </Button>
               </div>
 
@@ -265,21 +292,24 @@ export const Combat: React.FC = () => {
                     exit={{ opacity: 0, scale: 0.5 }}
                     className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center rounded-lg"
                   >
-                    <div className={`text-6xl mb-4 ${
-                      battleResult.victory ? 'text-green-400' : 'text-red-400'
-                    }`}>
+                    <div
+                      className={`text-6xl mb-4 ${
+                        battleResult.victory ? 'text-green-400' : 'text-red-400'
+                      }`}
+                    >
                       {battleResult.victory ? '🏆' : '💀'}
                     </div>
-                    <h2 className={`text-4xl font-bold mb-4 ${
-                      battleResult.victory ? 'text-green-400' : 'text-red-400'
-                    }`}>
+                    <h2
+                      className={`text-4xl font-bold mb-4 ${
+                        battleResult.victory ? 'text-green-400' : 'text-red-400'
+                      }`}
+                    >
                       {battleResult.victory ? 'Victory!' : 'Defeat!'}
                     </h2>
                     <p className="text-xl text-gray-300 mb-2">
-                      {battleResult.victory 
-                        ? `You defeated ${currentEnemy.name}!` 
-                        : `You were defeated by ${currentEnemy.name}...`
-                      }
+                      {battleResult.victory
+                        ? `You defeated ${currentEnemy.name}!`
+                        : `You were defeated by ${currentEnemy.name}...`}
                     </p>
                     {battleResult.victory && (
                       <p className="text-lg text-yellow-400 mb-6">

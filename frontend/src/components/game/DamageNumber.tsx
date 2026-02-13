@@ -14,7 +14,7 @@ export const DamageNumber: React.FC<DamageNumberProps> = ({
   isCritical,
   isHealing,
   position,
-  onComplete
+  onComplete,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -42,26 +42,26 @@ export const DamageNumber: React.FC<DamageNumberProps> = ({
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ 
+          initial={{
             x: position.x,
             y: position.y,
             scale: 0.5,
-            opacity: 0
+            opacity: 0,
           }}
           animate={{
             x: position.x + (Math.random() - 0.5) * 40,
             y: position.y - 80,
             scale: isCritical ? 1.5 : 1,
-            opacity: 1
+            opacity: 1,
           }}
           exit={{
             y: position.y - 120,
             opacity: 0,
-            scale: 0.8
+            scale: 0.8,
           }}
           transition={{
             duration: 1.5,
-            ease: 'easeOut'
+            ease: 'easeOut',
           }}
           className={`
             fixed pointer-events-none z-50 font-bold
@@ -70,16 +70,19 @@ export const DamageNumber: React.FC<DamageNumberProps> = ({
             drop-shadow-lg
           `}
           style={{
-            textShadow: isCritical ? '2px 2px 4px rgba(0,0,0,0.8)' : '1px 1px 2px rgba(0,0,0,0.6)',
-            fontFamily: 'monospace'
+            textShadow: isCritical
+              ? '2px 2px 4px rgba(0,0,0,0.8)'
+              : '1px 1px 2px rgba(0,0,0,0.6)',
+            fontFamily: 'monospace',
           }}
         >
-          {isHealing ? '+' : ''}{damage}
+          {isHealing ? '+' : ''}
+          {damage}
           {isCritical && (
             <motion.span
               animate={{
                 scale: [1, 1.2, 1],
-                rotate: [0, 5, -5, 0]
+                rotate: [0, 5, -5, 0],
               }}
               transition={{ duration: 0.5, repeat: 1 }}
               className="ml-1 text-yellow-300"

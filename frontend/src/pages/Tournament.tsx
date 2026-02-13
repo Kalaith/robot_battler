@@ -8,15 +8,15 @@ import { StatDisplay } from '../components/ui/StatDisplay';
 
 export const Tournament: React.FC = () => {
   const { setScreen, gold } = useGameStore();
-  const { 
-    isActive, 
+  const {
+    isActive,
     currentTournament,
     matches,
     wins,
     losses,
     totalRewards,
     startTournament,
-    getTournamentProgress
+    getTournamentProgress,
   } = useTournamentStore();
 
   const progress = getTournamentProgress();
@@ -30,7 +30,7 @@ export const Tournament: React.FC = () => {
       difficultyColor: 'text-green-600',
       icon: '🥉',
       rewards: '120% gold + 100 bonus',
-      enemies: 'Easy to Medium bots'
+      enemies: 'Easy to Medium bots',
     },
     {
       id: 'veteran',
@@ -40,7 +40,7 @@ export const Tournament: React.FC = () => {
       difficultyColor: 'text-yellow-600',
       icon: '🥈',
       rewards: '150% gold + 250 bonus',
-      enemies: 'Medium to Hard bots'
+      enemies: 'Medium to Hard bots',
     },
     {
       id: 'champion',
@@ -50,8 +50,8 @@ export const Tournament: React.FC = () => {
       difficultyColor: 'text-red-600',
       icon: '🥇',
       rewards: '200% gold + 500 bonus',
-      enemies: 'Hard to Elite bots'
-    }
+      enemies: 'Hard to Elite bots',
+    },
   ] as const;
 
   type TournamentTypeId = (typeof tournamentTypes)[number]['id'];
@@ -62,8 +62,8 @@ export const Tournament: React.FC = () => {
   };
 
   if (isActive) {
-    const currentType = tournamentTypes.find(t => t.id === currentTournament);
-    
+    const currentType = tournamentTypes.find((t) => t.id === currentTournament);
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -86,25 +86,41 @@ export const Tournament: React.FC = () => {
 
           {/* Tournament Progress */}
           <Card className="mb-8">
-            <h2 className="text-2xl font-bold text-center mb-6">Tournament Progress</h2>
-            
+            <h2 className="text-2xl font-bold text-center mb-6">
+              Tournament Progress
+            </h2>
+
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-              <StatDisplay label="Matches Completed" value={`${progress.completed}/${progress.total}`} icon="⚔️" />
+              <StatDisplay
+                label="Matches Completed"
+                value={`${progress.completed}/${progress.total}`}
+                icon="⚔️"
+              />
               <StatDisplay label="Wins" value={wins} icon="🏆" />
               <StatDisplay label="Losses" value={losses} icon="💀" />
-              <StatDisplay label="Total Rewards" value={`${totalRewards} Gold`} icon="🪙" />
+              <StatDisplay
+                label="Total Rewards"
+                value={`${totalRewards} Gold`}
+                icon="🪙"
+              />
             </div>
 
             {/* Match Progress Bar */}
             <div className="mb-6">
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">Match Progress</span>
-                <span className="text-sm text-gray-600">{Math.round(progress.winRate)}% Win Rate</span>
+                <span className="text-sm font-medium text-gray-700">
+                  Match Progress
+                </span>
+                <span className="text-sm text-gray-600">
+                  {Math.round(progress.winRate)}% Win Rate
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-4">
                 <div
                   className="bg-gradient-to-r from-blue-500 to-purple-500 h-4 rounded-full transition-all duration-500"
-                  style={{ width: `${(progress.completed / progress.total) * 100}%` }}
+                  style={{
+                    width: `${(progress.completed / progress.total) * 100}%`,
+                  }}
                 />
               </div>
             </div>
@@ -116,13 +132,14 @@ export const Tournament: React.FC = () => {
                   key={match.id}
                   className={`
                     p-3 rounded-lg border-2 text-center text-sm font-medium
-                    ${match.completed 
-                      ? match.won 
-                        ? 'bg-green-100 border-green-300 text-green-800'
-                        : 'bg-red-100 border-red-300 text-red-800'
-                      : index === progress.completed
-                        ? 'bg-blue-100 border-blue-300 text-blue-800 ring-2 ring-blue-400'
-                        : 'bg-gray-100 border-gray-300 text-gray-600'
+                    ${
+                      match.completed
+                        ? match.won
+                          ? 'bg-green-100 border-green-300 text-green-800'
+                          : 'bg-red-100 border-red-300 text-red-800'
+                        : index === progress.completed
+                          ? 'bg-blue-100 border-blue-300 text-blue-800 ring-2 ring-blue-400'
+                          : 'bg-gray-100 border-gray-300 text-gray-600'
                     }
                   `}
                 >
@@ -139,10 +156,7 @@ export const Tournament: React.FC = () => {
           </Card>
 
           <div className="text-center">
-            <Button
-              variant="secondary"
-              onClick={() => setScreen('main-menu')}
-            >
+            <Button variant="secondary" onClick={() => setScreen('main-menu')}>
               ← Back to Menu
             </Button>
           </div>
@@ -167,9 +181,10 @@ export const Tournament: React.FC = () => {
             🏆 Tournament Mode
           </h1>
           <p className="text-lg text-gray-600 mb-4">
-            Face consecutive opponents in structured tournaments for greater rewards!
+            Face consecutive opponents in structured tournaments for greater
+            rewards!
           </p>
-          
+
           <Card className="inline-block bg-yellow-50 border-yellow-200">
             <StatDisplay
               label="Your Gold"
@@ -191,11 +206,11 @@ export const Tournament: React.FC = () => {
             >
               <Card hover className="text-center h-full flex flex-col">
                 <div className="text-6xl mb-4">{tournament.icon}</div>
-                
+
                 <h3 className="text-xl font-bold text-gray-800 mb-2">
                   {tournament.name}
                 </h3>
-                
+
                 <p className="text-gray-600 mb-4 flex-1">
                   {tournament.description}
                 </p>
@@ -204,12 +219,12 @@ export const Tournament: React.FC = () => {
                   <div className={`font-bold ${tournament.difficultyColor}`}>
                     Difficulty: {tournament.difficulty}
                   </div>
-                  
+
                   <div className="text-sm bg-gray-50 p-3 rounded-lg">
                     <div className="font-medium mb-1">Opponents:</div>
                     <div className="text-gray-600">{tournament.enemies}</div>
                   </div>
-                  
+
                   <div className="text-sm bg-yellow-50 p-3 rounded-lg">
                     <div className="font-medium mb-1">Rewards:</div>
                     <div className="text-yellow-700">{tournament.rewards}</div>
@@ -229,10 +244,7 @@ export const Tournament: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <Button
-            variant="secondary"
-            onClick={() => setScreen('main-menu')}
-          >
+          <Button variant="secondary" onClick={() => setScreen('main-menu')}>
             ← Back to Menu
           </Button>
         </div>
@@ -250,7 +262,9 @@ export const Tournament: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-700">
               <ul className="space-y-2">
-                <li>• Face 5 consecutive opponents without healing between matches</li>
+                <li>
+                  • Face 5 consecutive opponents without healing between matches
+                </li>
                 <li>• Earn bonus gold multipliers for tournament victories</li>
                 <li>• Losing any match ends the tournament early</li>
               </ul>

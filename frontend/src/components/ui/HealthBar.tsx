@@ -14,10 +14,10 @@ export const HealthBar: React.FC<HealthBarProps> = ({
   max,
   label,
   size = 'md',
-  color
+  color,
 }) => {
   const percentage = Math.max(0, Math.min(100, (current / max) * 100));
-  
+
   // Auto-determine color based on percentage if not specified
   const getColor = () => {
     if (color) return color;
@@ -27,23 +27,23 @@ export const HealthBar: React.FC<HealthBarProps> = ({
   };
 
   const currentColor = getColor();
-  
+
   const sizeClasses = {
     sm: 'h-2',
     md: 'h-4',
-    lg: 'h-6'
+    lg: 'h-6',
   };
 
   const colorClasses = {
     green: 'bg-green-500',
     yellow: 'bg-yellow-500',
-    red: 'bg-red-500'
+    red: 'bg-red-500',
   };
 
   const textSizeClasses = {
     sm: 'text-xs',
     md: 'text-sm',
-    lg: 'text-base'
+    lg: 'text-base',
   };
 
   return (
@@ -56,7 +56,9 @@ export const HealthBar: React.FC<HealthBarProps> = ({
           </span>
         </div>
       )}
-      <div className={`bg-gray-200 rounded-full overflow-hidden ${sizeClasses[size]}`}>
+      <div
+        className={`bg-gray-200 rounded-full overflow-hidden ${sizeClasses[size]}`}
+      >
         <motion.div
           className={`${colorClasses[currentColor]} ${sizeClasses[size]} rounded-full`}
           initial={{ width: '100%' }}
@@ -65,7 +67,9 @@ export const HealthBar: React.FC<HealthBarProps> = ({
         />
       </div>
       {!label && (
-        <div className={`text-center mt-1 ${textSizeClasses[size]} text-gray-600`}>
+        <div
+          className={`text-center mt-1 ${textSizeClasses[size]} text-gray-600`}
+        >
           {Math.max(0, current)}/{max}
         </div>
       )}

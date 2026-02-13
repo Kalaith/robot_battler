@@ -15,31 +15,41 @@ export const RobotDisplay: React.FC<RobotDisplayProps> = ({
   tier,
   size = 'md',
   isAnimating = false,
-  className = ''
+  className = '',
 }) => {
   const sizeClasses = {
     sm: 'w-16 h-16',
     md: 'w-24 h-24',
-    lg: 'w-32 h-32'
+    lg: 'w-32 h-32',
   };
 
   const getTierColor = (tier: string) => {
     switch (tier.toLowerCase()) {
-      case 'basic': return 'text-gray-400';
-      case 'enhanced': return 'text-green-400';
-      case 'advanced': return 'text-blue-400';
-      case 'elite': return 'text-purple-400';
-      default: return 'text-gray-400';
+      case 'basic':
+        return 'text-gray-400';
+      case 'enhanced':
+        return 'text-green-400';
+      case 'advanced':
+        return 'text-blue-400';
+      case 'elite':
+        return 'text-purple-400';
+      default:
+        return 'text-gray-400';
     }
   };
 
   const getTierGlow = (tier: string) => {
     switch (tier.toLowerCase()) {
-      case 'basic': return 'shadow-gray-400/50';
-      case 'enhanced': return 'shadow-green-400/50';
-      case 'advanced': return 'shadow-blue-400/50';
-      case 'elite': return 'shadow-purple-400/50';
-      default: return 'shadow-gray-400/50';
+      case 'basic':
+        return 'shadow-gray-400/50';
+      case 'enhanced':
+        return 'shadow-green-400/50';
+      case 'advanced':
+        return 'shadow-blue-400/50';
+      case 'elite':
+        return 'shadow-purple-400/50';
+      default:
+        return 'shadow-gray-400/50';
     }
   };
 
@@ -54,10 +64,14 @@ export const RobotDisplay: React.FC<RobotDisplayProps> = ({
           flex items-center justify-center
           overflow-hidden
         `}
-        animate={isAnimating ? {
-          scale: [1, 1.1, 1],
-          rotate: [0, 5, -5, 0]
-        } : {}}
+        animate={
+          isAnimating
+            ? {
+                scale: [1, 1.1, 1],
+                rotate: [0, 5, -5, 0],
+              }
+            : {}
+        }
         transition={{ duration: 0.6, ease: 'easeInOut' }}
       >
         {/* Robot Body */}
@@ -69,29 +83,42 @@ export const RobotDisplay: React.FC<RobotDisplayProps> = ({
               rounded-lg border-2 border-current
               relative
             `}
-            style={{ fontSize: size === 'sm' ? '0.75rem' : size === 'lg' ? '1.25rem' : '1rem' }}
+            style={{
+              fontSize:
+                size === 'sm' ? '0.75rem' : size === 'lg' ? '1.25rem' : '1rem',
+            }}
           >
             {/* Head */}
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-              <div className={`w-4 h-4 ${getTierColor(tier)} rounded border border-current`} />
+              <div
+                className={`w-4 h-4 ${getTierColor(tier)} rounded border border-current`}
+              />
               <div className="absolute top-1 left-1 w-1 h-1 bg-red-400 rounded-full" />
               <div className="absolute top-1 right-1 w-1 h-1 bg-red-400 rounded-full" />
             </div>
-            
+
             {/* Arms */}
             <div className="absolute -left-2 top-2">
-              <div className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`} />
+              <div
+                className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`}
+              />
             </div>
             <div className="absolute -right-2 top-2">
-              <div className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`} />
+              <div
+                className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`}
+              />
             </div>
-            
+
             {/* Legs */}
             <div className="absolute -bottom-6 left-1">
-              <div className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`} />
+              <div
+                className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`}
+              />
             </div>
             <div className="absolute -bottom-6 right-1">
-              <div className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`} />
+              <div
+                className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`}
+              />
             </div>
 
             {/* Chest Details */}
@@ -103,10 +130,12 @@ export const RobotDisplay: React.FC<RobotDisplayProps> = ({
         </div>
 
         {/* Tier Badge */}
-        <div className={`
+        <div
+          className={`
           absolute top-1 right-1 px-1 py-0.5 text-xs font-bold
           bg-black/20 text-white rounded
-        `}>
+        `}
+        >
           {tier.charAt(0)}
         </div>
       </motion.div>

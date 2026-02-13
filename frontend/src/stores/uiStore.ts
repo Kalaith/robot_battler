@@ -5,7 +5,7 @@ interface UIState {
   activeShopCategory: ShopCategory;
   isSpecialOnCooldown: boolean;
   notifications: Notification[];
-  
+
   // Actions
   setActiveShopCategory: (category: ShopCategory) => void;
   setSpecialCooldown: (onCooldown: boolean) => void;
@@ -33,9 +33,9 @@ export const useUIStore = create<UIState>((set, get) => ({
   addNotification: (notification) => {
     const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
     const newNotification = { ...notification, id };
-    
+
     set((state) => ({
-      notifications: [...state.notifications, newNotification]
+      notifications: [...state.notifications, newNotification],
     }));
 
     // Auto-remove after duration
@@ -48,9 +48,9 @@ export const useUIStore = create<UIState>((set, get) => ({
 
   removeNotification: (id) => {
     set((state) => ({
-      notifications: state.notifications.filter(n => n.id !== id)
+      notifications: state.notifications.filter((n) => n.id !== id),
     }));
   },
 
-  clearNotifications: () => set({ notifications: [] })
+  clearNotifications: () => set({ notifications: [] }),
 }));

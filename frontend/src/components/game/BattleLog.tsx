@@ -9,7 +9,7 @@ interface BattleLogProps {
 
 export const BattleLog: React.FC<BattleLogProps> = ({
   entries,
-  maxHeight = 'max-h-48'
+  maxHeight = 'max-h-48',
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -33,10 +33,14 @@ export const BattleLog: React.FC<BattleLogProps> = ({
 
   const getTypeIcon = (type: BattleLogEntry['type']) => {
     switch (type) {
-      case 'damage': return '⚔️';
-      case 'healing': return '💚';
-      case 'info': return 'ℹ️';
-      default: return 'ℹ️';
+      case 'damage':
+        return '⚔️';
+      case 'healing':
+        return '💚';
+      case 'info':
+        return 'ℹ️';
+      default:
+        return 'ℹ️';
     }
   };
 
@@ -45,8 +49,8 @@ export const BattleLog: React.FC<BattleLogProps> = ({
       <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center">
         📋 Battle Log
       </h4>
-      
-      <div 
+
+      <div
         ref={scrollRef}
         className={`${maxHeight} overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100`}
       >
@@ -71,7 +75,7 @@ export const BattleLog: React.FC<BattleLogProps> = ({
             </motion.div>
           ))}
         </AnimatePresence>
-        
+
         {entries.length === 0 && (
           <div className="text-center text-gray-500 py-8">
             <span className="text-2xl">⚔️</span>

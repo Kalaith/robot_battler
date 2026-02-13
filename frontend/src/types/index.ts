@@ -91,5 +91,11 @@ export interface GameData {
   game_balance: GameBalance;
 }
 
-export type GameScreen = 'main-menu' | 'enemy-selection' | 'combat-screen' | 'parts-shop' | 'battle-result' | 'tournament';
+export type GameScreen =
+  | 'main-menu'
+  | 'enemy-selection'
+  | 'combat-screen'
+  | 'parts-shop'
+  | 'battle-result'
+  | 'tournament';
 export type ShopCategory = 'chassis' | 'weapons' | 'armor' | 'engines';

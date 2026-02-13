@@ -8,14 +8,17 @@ interface GameState {
   wins: number;
   currentScreen: GameScreen;
   player: PlayerRobot;
-  
+
   // Actions
   setScreen: (screen: GameScreen) => void;
   addGold: (amount: number) => void;
   spendGold: (amount: number) => boolean;
   addWin: () => void;
   getPlayerStats: () => PlayerStats;
-  buyPart: (category: keyof PlayerRobot['ownedParts'], index: number) => boolean;
+  buyPart: (
+    category: keyof PlayerRobot['ownedParts'],
+    index: number
+  ) => boolean;
   equipPart: (category: keyof PlayerRobot['ownedParts'], index: number) => void;
   resetGame: () => void;
 }
@@ -29,8 +32,8 @@ const initialPlayer: PlayerRobot = {
     chassis: [0],
     weapons: [0],
     armor: [0],
-    engines: [0]
-  }
+    engines: [0],
+  },
 };
 
 export const useGameStore = create<GameState>()(
@@ -71,26 +74,29 @@ export const useGameStore = create<GameState>()(
           health: chassis.health,
           attack: weapon.attack,
           defense: armor.defense,
-          speed: engine.speed
+          speed: engine.speed,
         };
       },
 
       buyPart: (category, index) => {
         const state = get();
         const part = gameData.robot_parts[category][index];
-        
+
         if (!part) return false;
-        
-        if (state.gold >= part.cost && !state.player.ownedParts[category].includes(index)) {
+
+        if (
+          state.gold >= part.cost &&
+          !state.player.ownedParts[category].includes(index)
+        ) {
           set((state) => ({
             gold: state.gold - part.cost,
             player: {
               ...state.player,
               ownedParts: {
                 ...state.player.ownedParts,
-                [category]: [...state.player.ownedParts[category], index]
-              }
-            }
+                [category]: [...state.player.ownedParts[category], index],
+              },
+            },
           }));
           return true;
         }
@@ -103,21 +109,22 @@ export const useGameStore = create<GameState>()(
           set((state) => ({
             player: {
               ...state.player,
-              [category]: index
-            }
+              [category]: index,
+            },
           }));
         }
       },
 
-      resetGame: () => set({
-        gold: gameData.game_balance.starting_gold,
-        wins: 0,
-        currentScreen: 'main-menu',
-        player: initialPlayer
-      })
+      resetGame: () =>
+        set({
+          gold: gameData.game_balance.starting_gold,
+          wins: 0,
+          currentScreen: 'main-menu',
+          player: initialPlayer,
+        }),
     }),
     {
-      name: 'robot-battler-game'
+      name: 'robot-battler-game',
     }
   )
 );

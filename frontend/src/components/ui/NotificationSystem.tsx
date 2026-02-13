@@ -19,10 +19,14 @@ export const NotificationSystem: React.FC = () => {
 
   const getNotificationIcon = (type: 'success' | 'error' | 'info') => {
     switch (type) {
-      case 'success': return '✅';
-      case 'error': return '❌';
-      case 'info': return 'ℹ️';
-      default: return 'ℹ️';
+      case 'success':
+        return '✅';
+      case 'error':
+        return '❌';
+      case 'info':
+        return 'ℹ️';
+      default:
+        return 'ℹ️';
     }
   };
 

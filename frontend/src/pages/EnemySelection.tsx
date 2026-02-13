@@ -21,31 +21,46 @@ export const EnemySelection: React.FC = () => {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
-      case 'easy': return 'text-green-600 bg-green-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'hard': return 'text-red-600 bg-red-100';
-      case 'elite': return 'text-purple-600 bg-purple-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'easy':
+        return 'text-green-600 bg-green-100';
+      case 'medium':
+        return 'text-yellow-600 bg-yellow-100';
+      case 'hard':
+        return 'text-red-600 bg-red-100';
+      case 'elite':
+        return 'text-purple-600 bg-purple-100';
+      default:
+        return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getDifficultyIcon = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
-      case 'easy': return '🟢';
-      case 'medium': return '🟡';
-      case 'hard': return '🔴';
-      case 'elite': return '🟣';
-      default: return '⚪';
+      case 'easy':
+        return '🟢';
+      case 'medium':
+        return '🟡';
+      case 'hard':
+        return '🔴';
+      case 'elite':
+        return '🟣';
+      default:
+        return '⚪';
     }
   };
 
   const getEnemyTier = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
-      case 'easy': return 'Basic';
-      case 'medium': return 'Enhanced';
-      case 'hard': return 'Advanced';
-      case 'elite': return 'Elite';
-      default: return 'Basic';
+      case 'easy':
+        return 'Basic';
+      case 'medium':
+        return 'Enhanced';
+      case 'hard':
+        return 'Advanced';
+      case 'elite':
+        return 'Elite';
+      default:
+        return 'Basic';
     }
   };
 
@@ -83,10 +98,12 @@ export const EnemySelection: React.FC = () => {
             >
               <Card hover className="text-center h-full flex flex-col">
                 {/* Difficulty Badge */}
-                <div className={`
+                <div
+                  className={`
                   inline-block px-3 py-1 rounded-full text-sm font-bold mb-4
                   ${getDifficultyColor(enemy.difficulty)}
-                `}>
+                `}
+                >
                   {getDifficultyIcon(enemy.difficulty)} {enemy.difficulty}
                 </div>
 
@@ -97,7 +114,7 @@ export const EnemySelection: React.FC = () => {
                       health: enemy.health,
                       attack: enemy.attack,
                       defense: enemy.defense,
-                      speed: enemy.speed
+                      speed: enemy.speed,
                     }}
                     tier={getEnemyTier(enemy.difficulty)}
                     size="md"
@@ -111,10 +128,30 @@ export const EnemySelection: React.FC = () => {
 
                 {/* Enemy Stats */}
                 <div className="space-y-2 mb-4 flex-1">
-                  <StatDisplay label="HP" value={enemy.health} icon="❤️" size="sm" />
-                  <StatDisplay label="ATK" value={enemy.attack} icon="⚔️" size="sm" />
-                  <StatDisplay label="DEF" value={enemy.defense} icon="🛡️" size="sm" />
-                  <StatDisplay label="SPD" value={enemy.speed} icon="⚡" size="sm" />
+                  <StatDisplay
+                    label="HP"
+                    value={enemy.health}
+                    icon="❤️"
+                    size="sm"
+                  />
+                  <StatDisplay
+                    label="ATK"
+                    value={enemy.attack}
+                    icon="⚔️"
+                    size="sm"
+                  />
+                  <StatDisplay
+                    label="DEF"
+                    value={enemy.defense}
+                    icon="🛡️"
+                    size="sm"
+                  />
+                  <StatDisplay
+                    label="SPD"
+                    value={enemy.speed}
+                    icon="⚡"
+                    size="sm"
+                  />
                 </div>
 
                 {/* Reward */}
@@ -144,10 +181,7 @@ export const EnemySelection: React.FC = () => {
           transition={{ delay: 0.6 }}
           className="text-center"
         >
-          <Button
-            variant="secondary"
-            onClick={() => setScreen('main-menu')}
-          >
+          <Button variant="secondary" onClick={() => setScreen('main-menu')}>
             ← Back to Menu
           </Button>
         </motion.div>

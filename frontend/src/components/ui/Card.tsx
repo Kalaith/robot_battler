@@ -14,12 +14,12 @@ export const Card: React.FC<CardProps> = ({
   className = '',
   hover = false,
   onClick,
-  padding = 'md'
+  padding = 'md',
 }) => {
   const paddingClasses = {
     sm: 'p-3',
     md: 'p-4',
-    lg: 'p-6'
+    lg: 'p-6',
   };
 
   const baseClasses = `
@@ -27,21 +27,21 @@ export const Card: React.FC<CardProps> = ({
     ${paddingClasses[padding]}
     ${onClick ? 'cursor-pointer' : ''}
     ${className}
-  `.trim().replace(/\s+/g, ' ');
+  `
+    .trim()
+    .replace(/\s+/g, ' ');
 
   const Component = onClick ? motion.div : 'div';
-  const motionProps = onClick ? {
-    whileHover: hover ? { scale: 1.02, y: -2 } : {},
-    whileTap: { scale: 0.98 },
-    transition: { duration: 0.2 }
-  } : {};
+  const motionProps = onClick
+    ? {
+        whileHover: hover ? { scale: 1.02, y: -2 } : {},
+        whileTap: { scale: 0.98 },
+        transition: { duration: 0.2 },
+      }
+    : {};
 
   return (
-    <Component
-      className={baseClasses}
-      onClick={onClick}
-      {...motionProps}
-    >
+    <Component className={baseClasses} onClick={onClick} {...motionProps}>
       {children}
     </Component>
   );

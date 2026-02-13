@@ -8,7 +8,7 @@ interface SettingsState {
   combatSpeed: 'slow' | 'normal' | 'fast';
   showDamageNumbers: boolean;
   confirmActions: boolean;
-  
+
   // Actions
   toggleSound: () => void;
   toggleAnimations: () => void;
@@ -33,22 +33,26 @@ export const useSettingsStore = create<SettingsState>()(
     (set) => ({
       ...defaultSettings,
 
-      toggleSound: () => set((state) => ({ soundEnabled: !state.soundEnabled })),
-      
-      toggleAnimations: () => set((state) => ({ animationsEnabled: !state.animationsEnabled })),
-      
+      toggleSound: () =>
+        set((state) => ({ soundEnabled: !state.soundEnabled })),
+
+      toggleAnimations: () =>
+        set((state) => ({ animationsEnabled: !state.animationsEnabled })),
+
       toggleAutoSave: () => set((state) => ({ autoSave: !state.autoSave })),
-      
+
       setCombatSpeed: (speed) => set({ combatSpeed: speed }),
-      
-      toggleDamageNumbers: () => set((state) => ({ showDamageNumbers: !state.showDamageNumbers })),
-      
-      toggleConfirmActions: () => set((state) => ({ confirmActions: !state.confirmActions })),
-      
+
+      toggleDamageNumbers: () =>
+        set((state) => ({ showDamageNumbers: !state.showDamageNumbers })),
+
+      toggleConfirmActions: () =>
+        set((state) => ({ confirmActions: !state.confirmActions })),
+
       resetSettings: () => set(defaultSettings),
     }),
     {
-      name: 'robot-battler-settings'
+      name: 'robot-battler-settings',
     }
   )
 );

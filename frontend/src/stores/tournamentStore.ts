@@ -22,33 +22,39 @@ interface TournamentState {
   wins: number;
   losses: number;
   totalRewards: number;
-  
+
   // Actions
   startTournament: (type: 'rookie' | 'veteran' | 'champion') => void;
   completeMatch: (won: boolean) => void;
   endTournament: () => void;
   resetTournament: () => void;
   getCurrentMatch: () => TournamentMatch | null;
-  getTournamentProgress: () => { completed: number; total: number; winRate: number };
+  getTournamentProgress: () => {
+    completed: number;
+    total: number;
+    winRate: number;
+  };
 }
 
-const generateTournamentMatches = (type: 'rookie' | 'veteran' | 'champion'): TournamentMatch[] => {
+const generateTournamentMatches = (
+  type: 'rookie' | 'veteran' | 'champion'
+): TournamentMatch[] => {
   const tournaments = {
     rookie: {
       enemies: [0, 0, 1, 1, 2], // Easy to medium difficulty
       goldMultiplier: 1.2,
-      bonusReward: 100
+      bonusReward: 100,
     },
     veteran: {
       enemies: [1, 1, 2, 2, 3], // Medium to hard difficulty
       goldMultiplier: 1.5,
-      bonusReward: 250
+      bonusReward: 250,
     },
     champion: {
       enemies: [2, 2, 3, 3, 3], // Hard to elite difficulty
       goldMultiplier: 2.0,
-      bonusReward: 500
-    }
+      bonusReward: 500,
+    },
   };
 
   const config = tournaments[type];
@@ -64,8 +70,9 @@ const generateTournamentMatches = (type: 'rookie' | 'veteran' | 'champion'): Tou
       won: false,
       rewards: {
         gold: Math.floor(enemy.gold * config.goldMultiplier),
-        bonus: matchIndex === config.enemies.length - 1 ? config.bonusReward : 0
-      }
+        bonus:
+          matchIndex === config.enemies.length - 1 ? config.bonusReward : 0,
+      },
     };
   });
 };
@@ -90,7 +97,7 @@ export const useTournamentStore = create<TournamentState>()(
           currentMatchIndex: 0,
           wins: 0,
           losses: 0,
-          totalRewards: 0
+          totalRewards: 0,
         });
       },
 
@@ -103,13 +110,15 @@ export const useTournamentStore = create<TournamentState>()(
         updatedMatches[state.currentMatchIndex] = {
           ...currentMatch,
           completed: true,
-          won
+          won,
         };
 
         const newWins = won ? state.wins + 1 : state.wins;
         const newLosses = won ? state.losses : state.losses + 1;
-        const newTotalRewards = won 
-          ? state.totalRewards + currentMatch.rewards.gold + currentMatch.rewards.bonus
+        const newTotalRewards = won
+          ? state.totalRewards +
+            currentMatch.rewards.gold +
+            currentMatch.rewards.bonus
           : state.totalRewards;
 
         set({
@@ -117,7 +126,7 @@ export const useTournamentStore = create<TournamentState>()(
           currentMatchIndex: state.currentMatchIndex + 1,
           wins: newWins,
           losses: newLosses,
-          totalRewards: newTotalRewards
+          totalRewards: newTotalRewards,
         });
 
         // Check if tournament is complete
@@ -131,7 +140,7 @@ export const useTournamentStore = create<TournamentState>()(
       endTournament: () => {
         set({
           isActive: false,
-          currentMatchIndex: 0
+          currentMatchIndex: 0,
         });
       },
 
@@ -143,7 +152,7 @@ export const useTournamentStore = create<TournamentState>()(
           currentMatchIndex: 0,
           wins: 0,
           losses: 0,
-          totalRewards: 0
+          totalRewards: 0,
         });
       },
 
@@ -154,15 +163,18 @@ export const useTournamentStore = create<TournamentState>()(
 
       getTournamentProgress: () => {
         const state = get();
-        const completed = state.matches.filter(m => m.completed).length;
+        const completed = state.matches.filter((m) => m.completed).length;
         const total = state.matches.length;
-        const winRate = state.wins + state.losses > 0 ? (state.wins / (state.wins + state.losses)) * 100 : 0;
-        
+        const winRate =
+          state.wins + state.losses > 0
+            ? (state.wins / (state.wins + state.losses)) * 100
+            : 0;
+
         return { completed, total, winRate };
-      }
+      },
     }),
     {
-      name: 'robot-battler-tournament'
+      name: 'robot-battler-tournament',
     }
   )
 );
