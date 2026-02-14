@@ -31,8 +31,7 @@ export const ParticleEffect: React.FC<ParticleEffectProps> = ({
     if (!trigger) return;
 
     const newParticles: Particle[] = [];
-    const particleCount =
-      type === 'explosion' ? 20 : type === 'critical' ? 15 : 10;
+    const particleCount = type === 'explosion' ? 20 : type === 'critical' ? 15 : 10;
 
     for (let i = 0; i < particleCount; i++) {
       const angle = (Math.PI * 2 * i) / particleCount + Math.random() * 0.5;
@@ -77,7 +76,7 @@ export const ParticleEffect: React.FC<ParticleEffectProps> = ({
   return (
     <div className="fixed inset-0 pointer-events-none z-40">
       <AnimatePresence>
-        {particles.map((particle) => (
+        {particles.map(particle => (
           <motion.div
             key={particle.id}
             initial={{

@@ -1,11 +1,5 @@
 import { create } from 'zustand';
-import {
-  CombatState,
-  Enemy,
-  BattleLogEntry,
-  DamageResult,
-  PlayerStats,
-} from '../types';
+import { CombatState, Enemy, BattleLogEntry, DamageResult, PlayerStats } from '../types';
 import { gameData } from '../data/gameData';
 
 interface DefenderStats {
@@ -52,17 +46,14 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
       enemyHealth: enemy.health,
       enemyMaxHealth: enemy.health,
       turn: 'player',
-      battleLog: [
-        { message: `Battle started against ${enemy.name}!`, type: 'info' },
-      ],
+      battleLog: [{ message: `Battle started against ${enemy.name}!`, type: 'info' }],
       isActive: true,
     });
   },
 
-  endBattle: (victory) => {
+  endBattle: victory => {
     const state = get();
-    const goldEarned =
-      victory && state.currentEnemy ? state.currentEnemy.gold : 0;
+    const goldEarned = victory && state.currentEnemy ? state.currentEnemy.gold : 0;
 
     set({
       isActive: false,
@@ -72,23 +63,18 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
     return { victory, goldEarned };
   },
 
-  playerAttack: (playerStats) => {
+  playerAttack: playerStats => {
     const state = get();
-    if (state.turn !== 'player' || !state.currentEnemy || !state.isActive)
-      return null;
+    if (state.turn !== 'player' || !state.currentEnemy || !state.isActive) return null;
 
-    const result = state.calculateDamage(
-      playerStats,
-      state.currentEnemy,
-      playerStats.attack
-    );
+    const result = state.calculateDamage(playerStats, state.currentEnemy, playerStats.attack);
     const newEnemyHealth = Math.max(0, state.enemyHealth - result.damage);
 
     const message = result.critical
       ? `Critical hit! You dealt ${result.damage} damage to ${state.currentEnemy.name}!`
       : `You dealt ${result.damage} damage to ${state.currentEnemy.name}!`;
 
-    set((state) => ({
+    set(state => ({
       enemyHealth: newEnemyHealth,
       turn: newEnemyHealth <= 0 ? 'player' : 'enemy',
       battleLog: [...state.battleLog, { message, type: 'damage' }],
@@ -102,12 +88,9 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
     if (state.turn !== 'player' || !state.isActive) return 0;
 
     const healAmount = Math.floor(state.playerMaxHealth * 0.1);
-    const newPlayerHealth = Math.min(
-      state.playerMaxHealth,
-      state.playerHealth + healAmount
-    );
+    const newPlayerHealth = Math.min(state.playerMaxHealth, state.playerHealth + healAmount);
 
-    set((state) => ({
+    set(state => ({
       playerHealth: newPlayerHealth,
       turn: 'enemy',
       battleLog: [
@@ -122,10 +105,9 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
     return healAmount;
   },
 
-  playerSpecial: (playerStats) => {
+  playerSpecial: playerStats => {
     const state = get();
-    if (state.turn !== 'player' || !state.currentEnemy || !state.isActive)
-      return null;
+    if (state.turn !== 'player' || !state.currentEnemy || !state.isActive) return null;
 
     const result = state.calculateDamage(
       playerStats,
@@ -134,7 +116,7 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
     );
     const newEnemyHealth = Math.max(0, state.enemyHealth - result.damage);
 
-    set((state) => ({
+    set(state => ({
       enemyHealth: newEnemyHealth,
       turn: newEnemyHealth <= 0 ? 'player' : 'enemy',
       battleLog: [
@@ -149,10 +131,9 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
     return result;
   },
 
-  enemyTurn: (playerStats) => {
+  enemyTurn: playerStats => {
     const state = get();
-    if (state.turn !== 'enemy' || !state.currentEnemy || !state.isActive)
-      return null;
+    if (state.turn !== 'enemy' || !state.currentEnemy || !state.isActive) return null;
 
     const result = state.calculateDamage(
       state.currentEnemy,
@@ -165,7 +146,7 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
       ? `Critical hit! ${state.currentEnemy.name} dealt ${result.damage} damage to you!`
       : `${state.currentEnemy.name} dealt ${result.damage} damage to you!`;
 
-    set((state) => ({
+    set(state => ({
       playerHealth: newPlayerHealth,
       turn: newPlayerHealth <= 0 ? 'enemy' : 'player',
       battleLog: [...state.battleLog, { message, type: 'damage' }],
@@ -174,8 +155,8 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
     return result;
   },
 
-  addBattleLog: (entry) => {
-    set((state) => ({
+  addBattleLog: entry => {
+    set(state => ({
       battleLog: [...state.battleLog, entry],
     }));
   },
@@ -184,10 +165,8 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
 
   calculateDamage: (attackerStats, defenderStats, baseAttack) => {
     void attackerStats; // attacker currently doesn't affect damage beyond baseAttack
-    const variance =
-      1 + (Math.random() - 0.5) * 2 * gameData.game_balance.damage_variance;
-    const criticalHit =
-      Math.random() < gameData.game_balance.critical_hit_chance;
+    const variance = 1 + (Math.random() - 0.5) * 2 * gameData.game_balance.damage_variance;
+    const criticalHit = Math.random() < gameData.game_balance.critical_hit_chance;
     const critMultiplier = criticalHit ? 2 : 1;
 
     let damage = Math.floor(baseAttack * variance * critMultiplier);

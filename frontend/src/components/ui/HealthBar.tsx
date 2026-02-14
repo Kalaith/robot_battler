@@ -56,9 +56,7 @@ export const HealthBar: React.FC<HealthBarProps> = ({
           </span>
         </div>
       )}
-      <div
-        className={`bg-gray-200 rounded-full overflow-hidden ${sizeClasses[size]}`}
-      >
+      <div className={`bg-gray-200 rounded-full overflow-hidden ${sizeClasses[size]}`}>
         <motion.div
           className={`${colorClasses[currentColor]} ${sizeClasses[size]} rounded-full`}
           initial={{ width: '100%' }}
@@ -67,9 +65,7 @@ export const HealthBar: React.FC<HealthBarProps> = ({
         />
       </div>
       {!label && (
-        <div
-          className={`text-center mt-1 ${textSizeClasses[size]} text-gray-600`}
-        >
+        <div className={`text-center mt-1 ${textSizeClasses[size]} text-gray-600`}>
           {Math.max(0, current)}/{max}
         </div>
       )}

@@ -30,24 +30,20 @@ const defaultSettings = {
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
-    (set) => ({
+    set => ({
       ...defaultSettings,
 
-      toggleSound: () =>
-        set((state) => ({ soundEnabled: !state.soundEnabled })),
+      toggleSound: () => set(state => ({ soundEnabled: !state.soundEnabled })),
 
-      toggleAnimations: () =>
-        set((state) => ({ animationsEnabled: !state.animationsEnabled })),
+      toggleAnimations: () => set(state => ({ animationsEnabled: !state.animationsEnabled })),
 
-      toggleAutoSave: () => set((state) => ({ autoSave: !state.autoSave })),
+      toggleAutoSave: () => set(state => ({ autoSave: !state.autoSave })),
 
-      setCombatSpeed: (speed) => set({ combatSpeed: speed }),
+      setCombatSpeed: speed => set({ combatSpeed: speed }),
 
-      toggleDamageNumbers: () =>
-        set((state) => ({ showDamageNumbers: !state.showDamageNumbers })),
+      toggleDamageNumbers: () => set(state => ({ showDamageNumbers: !state.showDamageNumbers })),
 
-      toggleConfirmActions: () =>
-        set((state) => ({ confirmActions: !state.confirmActions })),
+      toggleConfirmActions: () => set(state => ({ confirmActions: !state.confirmActions })),
 
       resetSettings: () => set(defaultSettings),
     }),

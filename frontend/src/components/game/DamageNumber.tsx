@@ -70,9 +70,7 @@ export const DamageNumber: React.FC<DamageNumberProps> = ({
             drop-shadow-lg
           `}
           style={{
-            textShadow: isCritical
-              ? '2px 2px 4px rgba(0,0,0,0.8)'
-              : '1px 1px 2px rgba(0,0,0,0.6)',
+            textShadow: isCritical ? '2px 2px 4px rgba(0,0,0,0.8)' : '1px 1px 2px rgba(0,0,0,0.6)',
             fontFamily: 'monospace',
           }}
         >

@@ -1,13 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import {
-  Armor,
-  Chassis,
-  Engine,
-  RobotPart,
-  ShopCategory,
-  Weapon,
-} from '../../types';
+import { Armor, Chassis, Engine, RobotPart, ShopCategory, Weapon } from '../../types';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 
@@ -160,9 +153,7 @@ export const PartCard: React.FC<PartCardProps> = ({
                 <span className="text-xl">{getStatIcon(category)}</span>
                 <span className="font-medium">{getStatName(category)}:</span>
               </div>
-              <span className="text-xl font-bold text-gray-800">
-                +{getStatValue()}
-              </span>
+              <span className="text-xl font-bold text-gray-800">+{getStatValue()}</span>
             </div>
           </div>
 

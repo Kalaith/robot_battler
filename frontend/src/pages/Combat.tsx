@@ -28,8 +28,7 @@ export const Combat: React.FC = () => {
     resetCombat,
   } = useCombatStore();
 
-  const { isSpecialOnCooldown, setSpecialCooldown, addNotification } =
-    useUIStore();
+  const { isSpecialOnCooldown, setSpecialCooldown, addNotification } = useUIStore();
   const [battleResult, setBattleResult] = useState<{
     victory: boolean;
     goldEarned: number;
@@ -188,11 +187,7 @@ export const Combat: React.FC = () => {
                 <motion.div
                   animate={{
                     scale: [1, 1.1, 1],
-                    textShadow: [
-                      '0 0 10px #ff0000',
-                      '0 0 20px #ff0000',
-                      '0 0 10px #ff0000',
-                    ],
+                    textShadow: ['0 0 10px #ff0000', '0 0 20px #ff0000', '0 0 10px #ff0000'],
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="text-6xl font-bold text-red-400 mb-4"
@@ -224,12 +219,7 @@ export const Combat: React.FC = () => {
                   isAnimating={isEnemyAnimating}
                 />
                 <div className="mt-4">
-                  <HealthBar
-                    current={enemyHealth}
-                    max={enemyMaxHealth}
-                    label="Health"
-                    size="lg"
-                  />
+                  <HealthBar current={enemyHealth} max={enemyMaxHealth} label="Health" size="lg" />
                 </div>
               </div>
             </div>
@@ -244,9 +234,7 @@ export const Combat: React.FC = () => {
             transition={{ delay: 0.4 }}
           >
             <Card className="bg-gray-800 border-gray-700">
-              <h3 className="text-xl font-bold mb-6 text-center text-white">
-                Combat Actions
-              </h3>
+              <h3 className="text-xl font-bold mb-6 text-center text-white">Combat Actions</h3>
 
               <div className="space-y-4">
                 <Button
@@ -273,13 +261,10 @@ export const Combat: React.FC = () => {
                   variant="outline"
                   size="lg"
                   fullWidth
-                  disabled={
-                    turn !== 'player' || !isActive || isSpecialOnCooldown
-                  }
+                  disabled={turn !== 'player' || !isActive || isSpecialOnCooldown}
                   onClick={handlePlayerSpecial}
                 >
-                  ⚡ Special Attack{' '}
-                  {isSpecialOnCooldown ? '(Cooldown)' : '(1.5x damage)'}
+                  ⚡ Special Attack {isSpecialOnCooldown ? '(Cooldown)' : '(1.5x damage)'}
                 </Button>
               </div>
 
@@ -316,11 +301,7 @@ export const Combat: React.FC = () => {
                         🪙 +{battleResult.goldEarned} Gold
                       </p>
                     )}
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      onClick={handleContinue}
-                    >
+                    <Button variant="primary" size="lg" onClick={handleContinue}>
                       Continue
                     </Button>
                   </motion.div>

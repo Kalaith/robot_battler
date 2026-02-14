@@ -62,7 +62,7 @@ export const Tournament: React.FC = () => {
   };
 
   if (isActive) {
-    const currentType = tournamentTypes.find((t) => t.id === currentTournament);
+    const currentType = tournamentTypes.find(t => t.id === currentTournament);
 
     return (
       <motion.div
@@ -86,9 +86,7 @@ export const Tournament: React.FC = () => {
 
           {/* Tournament Progress */}
           <Card className="mb-8">
-            <h2 className="text-2xl font-bold text-center mb-6">
-              Tournament Progress
-            </h2>
+            <h2 className="text-2xl font-bold text-center mb-6">Tournament Progress</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
               <StatDisplay
@@ -98,19 +96,13 @@ export const Tournament: React.FC = () => {
               />
               <StatDisplay label="Wins" value={wins} icon="🏆" />
               <StatDisplay label="Losses" value={losses} icon="💀" />
-              <StatDisplay
-                label="Total Rewards"
-                value={`${totalRewards} Gold`}
-                icon="🪙"
-              />
+              <StatDisplay label="Total Rewards" value={`${totalRewards} Gold`} icon="🪙" />
             </div>
 
             {/* Match Progress Bar */}
             <div className="mb-6">
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">
-                  Match Progress
-                </span>
+                <span className="text-sm font-medium text-gray-700">Match Progress</span>
                 <span className="text-sm text-gray-600">
                   {Math.round(progress.winRate)}% Win Rate
                 </span>
@@ -146,9 +138,7 @@ export const Tournament: React.FC = () => {
                   <div className="font-bold">Match {index + 1}</div>
                   <div className="text-xs">{match.enemy.name}</div>
                   {match.completed && (
-                    <div className="text-xs mt-1">
-                      {match.won ? '✅ Won' : '❌ Lost'}
-                    </div>
+                    <div className="text-xs mt-1">{match.won ? '✅ Won' : '❌ Lost'}</div>
                   )}
                 </div>
               ))}
@@ -177,22 +167,13 @@ export const Tournament: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            🏆 Tournament Mode
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">🏆 Tournament Mode</h1>
           <p className="text-lg text-gray-600 mb-4">
-            Face consecutive opponents in structured tournaments for greater
-            rewards!
+            Face consecutive opponents in structured tournaments for greater rewards!
           </p>
 
           <Card className="inline-block bg-yellow-50 border-yellow-200">
-            <StatDisplay
-              label="Your Gold"
-              value={gold}
-              icon="🪙"
-              size="lg"
-              highlight
-            />
+            <StatDisplay label="Your Gold" value={gold} icon="🪙" size="lg" highlight />
           </Card>
         </motion.header>
 
@@ -207,13 +188,9 @@ export const Tournament: React.FC = () => {
               <Card hover className="text-center h-full flex flex-col">
                 <div className="text-6xl mb-4">{tournament.icon}</div>
 
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  {tournament.name}
-                </h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">{tournament.name}</h3>
 
-                <p className="text-gray-600 mb-4 flex-1">
-                  {tournament.description}
-                </p>
+                <p className="text-gray-600 mb-4 flex-1">{tournament.description}</p>
 
                 <div className="space-y-3 mb-6">
                   <div className={`font-bold ${tournament.difficultyColor}`}>
@@ -257,14 +234,10 @@ export const Tournament: React.FC = () => {
           className="mt-8"
         >
           <Card className="bg-blue-50 border-blue-200">
-            <h3 className="font-bold text-blue-800 mb-3 text-center">
-              📋 Tournament Rules
-            </h3>
+            <h3 className="font-bold text-blue-800 mb-3 text-center">📋 Tournament Rules</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-700">
               <ul className="space-y-2">
-                <li>
-                  • Face 5 consecutive opponents without healing between matches
-                </li>
+                <li>• Face 5 consecutive opponents without healing between matches</li>
                 <li>• Earn bonus gold multipliers for tournament victories</li>
                 <li>• Losing any match ends the tournament early</li>
               </ul>

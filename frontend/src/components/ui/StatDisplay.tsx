@@ -21,9 +21,7 @@ export const StatDisplay: React.FC<StatDisplayProps> = ({
     lg: 'text-lg',
   };
 
-  const valueClasses = highlight
-    ? 'text-blue-600 font-bold'
-    : 'text-gray-800 font-semibold';
+  const valueClasses = highlight ? 'text-blue-600 font-bold' : 'text-gray-800 font-semibold';
 
   return (
     <div className={`flex items-center justify-between ${sizeClasses[size]}`}>

@@ -26,15 +26,15 @@ export const useUIStore = create<UIState>((set, get) => ({
   isSpecialOnCooldown: false,
   notifications: [],
 
-  setActiveShopCategory: (category) => set({ activeShopCategory: category }),
+  setActiveShopCategory: category => set({ activeShopCategory: category }),
 
-  setSpecialCooldown: (onCooldown) => set({ isSpecialOnCooldown: onCooldown }),
+  setSpecialCooldown: onCooldown => set({ isSpecialOnCooldown: onCooldown }),
 
-  addNotification: (notification) => {
+  addNotification: notification => {
     const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
     const newNotification = { ...notification, id };
 
-    set((state) => ({
+    set(state => ({
       notifications: [...state.notifications, newNotification],
     }));
 
@@ -46,9 +46,9 @@ export const useUIStore = create<UIState>((set, get) => ({
     }
   },
 
-  removeNotification: (id) => {
-    set((state) => ({
-      notifications: state.notifications.filter((n) => n.id !== id),
+  removeNotification: id => {
+    set(state => ({
+      notifications: state.notifications.filter(n => n.id !== id),
     }));
   },
 

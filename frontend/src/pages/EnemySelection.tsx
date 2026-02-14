@@ -79,9 +79,7 @@ export const EnemySelection: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            🥊 Choose Your Opponent
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">🥊 Choose Your Opponent</h1>
           <p className="text-lg text-gray-600">
             Select an enemy to battle! Higher difficulty enemies give more gold.
           </p>
@@ -122,51 +120,23 @@ export const EnemySelection: React.FC = () => {
                 </div>
 
                 {/* Enemy Name */}
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
-                  {enemy.name}
-                </h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-4">{enemy.name}</h3>
 
                 {/* Enemy Stats */}
                 <div className="space-y-2 mb-4 flex-1">
-                  <StatDisplay
-                    label="HP"
-                    value={enemy.health}
-                    icon="❤️"
-                    size="sm"
-                  />
-                  <StatDisplay
-                    label="ATK"
-                    value={enemy.attack}
-                    icon="⚔️"
-                    size="sm"
-                  />
-                  <StatDisplay
-                    label="DEF"
-                    value={enemy.defense}
-                    icon="🛡️"
-                    size="sm"
-                  />
-                  <StatDisplay
-                    label="SPD"
-                    value={enemy.speed}
-                    icon="⚡"
-                    size="sm"
-                  />
+                  <StatDisplay label="HP" value={enemy.health} icon="❤️" size="sm" />
+                  <StatDisplay label="ATK" value={enemy.attack} icon="⚔️" size="sm" />
+                  <StatDisplay label="DEF" value={enemy.defense} icon="🛡️" size="sm" />
+                  <StatDisplay label="SPD" value={enemy.speed} icon="⚡" size="sm" />
                 </div>
 
                 {/* Reward */}
                 <div className="mb-4 p-3 bg-yellow-100 rounded-lg">
-                  <div className="text-yellow-700 font-bold">
-                    🪙 Reward: {enemy.gold} Gold
-                  </div>
+                  <div className="text-yellow-700 font-bold">🪙 Reward: {enemy.gold} Gold</div>
                 </div>
 
                 {/* Fight Button */}
-                <Button
-                  variant="primary"
-                  fullWidth
-                  onClick={() => handleFight(enemy)}
-                >
+                <Button variant="primary" fullWidth onClick={() => handleFight(enemy)}>
                   ⚔️ Fight!
                 </Button>
               </Card>

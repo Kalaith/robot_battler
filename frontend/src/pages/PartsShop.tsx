@@ -11,8 +11,7 @@ import { ShopCategory } from '../types';
 
 export const PartsShop: React.FC = () => {
   const { gold, player, setScreen, buyPart, equipPart } = useGameStore();
-  const { activeShopCategory, setActiveShopCategory, addNotification } =
-    useUIStore();
+  const { activeShopCategory, setActiveShopCategory, addNotification } = useUIStore();
 
   const categories: { key: ShopCategory; label: string; icon: string }[] = [
     { key: 'chassis', label: 'Chassis', icon: '🤖' },
@@ -81,12 +80,9 @@ export const PartsShop: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            🔧 Parts Shop
-          </h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">🔧 Parts Shop</h1>
           <p className="text-lg text-gray-600 mb-4">
-            Upgrade your robot with better parts to increase your battle
-            performance!
+            Upgrade your robot with better parts to increase your battle performance!
           </p>
 
           {/* Gold Display */}
@@ -130,8 +126,7 @@ export const PartsShop: React.FC = () => {
                   <span className="text-xl">{category.icon}</span>
                   <span>{category.label}</span>
                   <span className="text-sm opacity-75">
-                    ({getOwnedCount(category.key)}/
-                    {gameData.robot_parts[category.key].length})
+                    ({getOwnedCount(category.key)}/{gameData.robot_parts[category.key].length})
                   </span>
                 </motion.button>
               ))}
@@ -161,9 +156,8 @@ export const PartsShop: React.FC = () => {
               <StatDisplay
                 label="Current Equipped"
                 value={
-                  gameData.robot_parts[activeShopCategory][
-                    player[activeShopCategory]
-                  ]?.name || 'None'
+                  gameData.robot_parts[activeShopCategory][player[activeShopCategory]]?.name ||
+                  'None'
                 }
                 icon="✨"
               />
@@ -200,11 +194,7 @@ export const PartsShop: React.FC = () => {
           transition={{ delay: 0.6 }}
           className="text-center"
         >
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={() => setScreen('main-menu')}
-          >
+          <Button variant="secondary" size="lg" onClick={() => setScreen('main-menu')}>
             ← Back to Menu
           </Button>
         </motion.div>
@@ -217,9 +207,7 @@ export const PartsShop: React.FC = () => {
           className="mt-8 max-w-2xl mx-auto"
         >
           <Card className="bg-purple-50 border-purple-200">
-            <h3 className="font-bold text-purple-800 mb-3 text-center">
-              💡 Shopping Tips
-            </h3>
+            <h3 className="font-bold text-purple-800 mb-3 text-center">💡 Shopping Tips</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-purple-700">
               <ul className="space-y-2">
                 <li>• Higher tier parts cost more but provide better stats</li>

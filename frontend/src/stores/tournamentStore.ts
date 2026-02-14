@@ -36,9 +36,7 @@ interface TournamentState {
   };
 }
 
-const generateTournamentMatches = (
-  type: 'rookie' | 'veteran' | 'champion'
-): TournamentMatch[] => {
+const generateTournamentMatches = (type: 'rookie' | 'veteran' | 'champion'): TournamentMatch[] => {
   const tournaments = {
     rookie: {
       enemies: [0, 0, 1, 1, 2], // Easy to medium difficulty
@@ -70,8 +68,7 @@ const generateTournamentMatches = (
       won: false,
       rewards: {
         gold: Math.floor(enemy.gold * config.goldMultiplier),
-        bonus:
-          matchIndex === config.enemies.length - 1 ? config.bonusReward : 0,
+        bonus: matchIndex === config.enemies.length - 1 ? config.bonusReward : 0,
       },
     };
   });
@@ -88,7 +85,7 @@ export const useTournamentStore = create<TournamentState>()(
       losses: 0,
       totalRewards: 0,
 
-      startTournament: (type) => {
+      startTournament: type => {
         const matches = generateTournamentMatches(type);
         set({
           isActive: true,
@@ -101,7 +98,7 @@ export const useTournamentStore = create<TournamentState>()(
         });
       },
 
-      completeMatch: (won) => {
+      completeMatch: won => {
         const state = get();
         const currentMatch = state.matches[state.currentMatchIndex];
         if (!currentMatch) return;
@@ -116,9 +113,7 @@ export const useTournamentStore = create<TournamentState>()(
         const newWins = won ? state.wins + 1 : state.wins;
         const newLosses = won ? state.losses : state.losses + 1;
         const newTotalRewards = won
-          ? state.totalRewards +
-            currentMatch.rewards.gold +
-            currentMatch.rewards.bonus
+          ? state.totalRewards + currentMatch.rewards.gold + currentMatch.rewards.bonus
           : state.totalRewards;
 
         set({
@@ -163,12 +158,10 @@ export const useTournamentStore = create<TournamentState>()(
 
       getTournamentProgress: () => {
         const state = get();
-        const completed = state.matches.filter((m) => m.completed).length;
+        const completed = state.matches.filter(m => m.completed).length;
         const total = state.matches.length;
         const winRate =
-          state.wins + state.losses > 0
-            ? (state.wins / (state.wins + state.losses)) * 100
-            : 0;
+          state.wins + state.losses > 0 ? (state.wins / (state.wins + state.losses)) * 100 : 0;
 
         return { completed, total, winRate };
       },

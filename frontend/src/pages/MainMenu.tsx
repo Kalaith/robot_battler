@@ -31,9 +31,7 @@ export const MainMenu: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="text-center mb-8"
         >
-          <h1 className="text-5xl font-bold text-gray-800 mb-2">
-            ⚔️ Robot Battler
-          </h1>
+          <h1 className="text-5xl font-bold text-gray-800 mb-2">⚔️ Robot Battler</h1>
           <p className="text-lg text-gray-600">
             Build, customize, and battle with your mechanical warriors!
           </p>
@@ -73,39 +71,17 @@ export const MainMenu: React.FC = () => {
             transition={{ delay: 0.4 }}
           >
             <Card className="text-center">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
-                Your Robot
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Robot</h2>
 
               <div className="mb-6">
-                <RobotDisplay
-                  stats={playerStats}
-                  tier={getCurrentTier()}
-                  size="lg"
-                />
+                <RobotDisplay stats={playerStats} tier={getCurrentTier()} size="lg" />
               </div>
 
               <div className="space-y-3">
-                <StatDisplay
-                  label="Health"
-                  value={playerStats.health}
-                  icon="❤️"
-                />
-                <StatDisplay
-                  label="Attack"
-                  value={playerStats.attack}
-                  icon="⚔️"
-                />
-                <StatDisplay
-                  label="Defense"
-                  value={playerStats.defense}
-                  icon="🛡️"
-                />
-                <StatDisplay
-                  label="Speed"
-                  value={playerStats.speed}
-                  icon="⚡"
-                />
+                <StatDisplay label="Health" value={playerStats.health} icon="❤️" />
+                <StatDisplay label="Attack" value={playerStats.attack} icon="⚔️" />
+                <StatDisplay label="Defense" value={playerStats.defense} icon="🛡️" />
+                <StatDisplay label="Speed" value={playerStats.speed} icon="⚡" />
               </div>
             </Card>
           </motion.div>

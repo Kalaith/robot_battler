@@ -33,7 +33,7 @@ export const NotificationSystem: React.FC = () => {
   return (
     <div className="fixed top-4 right-4 z-50 max-w-sm space-y-2">
       <AnimatePresence>
-        {notifications.map((notification) => (
+        {notifications.map(notification => (
           <motion.div
             key={notification.id}
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
@@ -47,14 +47,12 @@ export const NotificationSystem: React.FC = () => {
             `}
             onClick={() => removeNotification(notification.id)}
           >
-            <span className="text-lg flex-shrink-0">
-              {getNotificationIcon(notification.type)}
-            </span>
+            <span className="text-lg flex-shrink-0">{getNotificationIcon(notification.type)}</span>
             <div className="flex-1">
               <p className="text-sm leading-tight">{notification.message}</p>
             </div>
             <button
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 removeNotification(notification.id);
               }}

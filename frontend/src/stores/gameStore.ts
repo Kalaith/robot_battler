@@ -15,10 +15,7 @@ interface GameState {
   spendGold: (amount: number) => boolean;
   addWin: () => void;
   getPlayerStats: () => PlayerStats;
-  buyPart: (
-    category: keyof PlayerRobot['ownedParts'],
-    index: number
-  ) => boolean;
+  buyPart: (category: keyof PlayerRobot['ownedParts'], index: number) => boolean;
   equipPart: (category: keyof PlayerRobot['ownedParts'], index: number) => void;
   resetGame: () => void;
 }
@@ -44,11 +41,11 @@ export const useGameStore = create<GameState>()(
       currentScreen: 'main-menu',
       player: initialPlayer,
 
-      setScreen: (screen) => set({ currentScreen: screen }),
+      setScreen: screen => set({ currentScreen: screen }),
 
-      addGold: (amount) => set((state) => ({ gold: state.gold + amount })),
+      addGold: amount => set(state => ({ gold: state.gold + amount })),
 
-      spendGold: (amount) => {
+      spendGold: amount => {
         const state = get();
         if (state.gold >= amount) {
           set({ gold: state.gold - amount });
@@ -57,7 +54,7 @@ export const useGameStore = create<GameState>()(
         return false;
       },
 
-      addWin: () => set((state) => ({ wins: state.wins + 1 })),
+      addWin: () => set(state => ({ wins: state.wins + 1 })),
 
       getPlayerStats: () => {
         const { player } = get();
@@ -84,11 +81,8 @@ export const useGameStore = create<GameState>()(
 
         if (!part) return false;
 
-        if (
-          state.gold >= part.cost &&
-          !state.player.ownedParts[category].includes(index)
-        ) {
-          set((state) => ({
+        if (state.gold >= part.cost && !state.player.ownedParts[category].includes(index)) {
+          set(state => ({
             gold: state.gold - part.cost,
             player: {
               ...state.player,
@@ -106,7 +100,7 @@ export const useGameStore = create<GameState>()(
       equipPart: (category, index) => {
         const state = get();
         if (state.player.ownedParts[category].includes(index)) {
-          set((state) => ({
+          set(state => ({
             player: {
               ...state.player,
               [category]: index,

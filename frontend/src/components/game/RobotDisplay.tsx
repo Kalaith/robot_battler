@@ -84,41 +84,30 @@ export const RobotDisplay: React.FC<RobotDisplayProps> = ({
               relative
             `}
             style={{
-              fontSize:
-                size === 'sm' ? '0.75rem' : size === 'lg' ? '1.25rem' : '1rem',
+              fontSize: size === 'sm' ? '0.75rem' : size === 'lg' ? '1.25rem' : '1rem',
             }}
           >
             {/* Head */}
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-              <div
-                className={`w-4 h-4 ${getTierColor(tier)} rounded border border-current`}
-              />
+              <div className={`w-4 h-4 ${getTierColor(tier)} rounded border border-current`} />
               <div className="absolute top-1 left-1 w-1 h-1 bg-red-400 rounded-full" />
               <div className="absolute top-1 right-1 w-1 h-1 bg-red-400 rounded-full" />
             </div>
 
             {/* Arms */}
             <div className="absolute -left-2 top-2">
-              <div
-                className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`}
-              />
+              <div className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`} />
             </div>
             <div className="absolute -right-2 top-2">
-              <div
-                className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`}
-              />
+              <div className={`w-3 h-6 ${getTierColor(tier)} rounded border border-current`} />
             </div>
 
             {/* Legs */}
             <div className="absolute -bottom-6 left-1">
-              <div
-                className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`}
-              />
+              <div className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`} />
             </div>
             <div className="absolute -bottom-6 right-1">
-              <div
-                className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`}
-              />
+              <div className={`w-2 h-6 ${getTierColor(tier)} rounded border border-current`} />
             </div>
 
             {/* Chest Details */}

@@ -7,10 +7,7 @@ interface BattleLogProps {
   maxHeight?: string;
 }
 
-export const BattleLog: React.FC<BattleLogProps> = ({
-  entries,
-  maxHeight = 'max-h-48',
-}) => {
+export const BattleLog: React.FC<BattleLogProps> = ({ entries, maxHeight = 'max-h-48' }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,9 +43,7 @@ export const BattleLog: React.FC<BattleLogProps> = ({
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4">
-      <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center">
-        📋 Battle Log
-      </h4>
+      <h4 className="text-lg font-bold text-gray-800 mb-3 flex items-center">📋 Battle Log</h4>
 
       <div
         ref={scrollRef}
@@ -68,9 +63,7 @@ export const BattleLog: React.FC<BattleLogProps> = ({
                 ${getEntryStyles(entry.type)}
               `}
             >
-              <span className="text-lg flex-shrink-0 mt-0.5">
-                {getTypeIcon(entry.type)}
-              </span>
+              <span className="text-lg flex-shrink-0 mt-0.5">{getTypeIcon(entry.type)}</span>
               <span className="flex-1">{entry.message}</span>
             </motion.div>
           ))}

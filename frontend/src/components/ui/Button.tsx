@@ -37,9 +37,7 @@ export const Button: React.FC<ButtonProps> = ({
     lg: 'px-6 py-3 text-lg',
   };
 
-  const disabledClasses = disabled
-    ? 'opacity-50 cursor-not-allowed'
-    : 'cursor-pointer';
+  const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
 
   const widthClasses = fullWidth ? 'w-full' : '';
 
