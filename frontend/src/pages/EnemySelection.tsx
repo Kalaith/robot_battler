@@ -14,8 +14,8 @@ export const EnemySelection: React.FC = () => {
   const { startBattle } = useCombatStore();
   const playerStats = getPlayerStats();
 
-  const handleFight = (enemy: Enemy) => {
-    startBattle(enemy, playerStats);
+  const handleFight = async (enemy: Enemy) => {
+    await startBattle(enemy, playerStats);
     setScreen('combat-screen');
   };
 
@@ -136,7 +136,7 @@ export const EnemySelection: React.FC = () => {
                 </div>
 
                 {/* Fight Button */}
-                <Button variant="primary" fullWidth onClick={() => handleFight(enemy)}>
+                <Button variant="primary" fullWidth onClick={() => void handleFight(enemy)}>
                   ⚔️ Fight!
                 </Button>
               </Card>

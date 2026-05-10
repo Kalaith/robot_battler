@@ -1,27 +1,18 @@
 import { create } from 'zustand';
 import { CombatState, Enemy, BattleLogEntry, DamageResult, PlayerStats } from '../types';
-import { gameData } from '../data/gameData';
-
-interface DefenderStats {
-  defense: number;
-}
+import { runRobotIntent } from './gameStore';
+import type { WebHatcheryGameState } from '../api/webhatcheryGameApi';
 
 interface CombatStore extends CombatState {
-  // Actions
-  startBattle: (enemy: Enemy, playerStats: PlayerStats) => void;
-  endBattle: (victory: boolean) => { victory: boolean; goldEarned: number };
-  playerAttack: (playerStats: PlayerStats) => DamageResult | null;
-  playerDefend: () => number;
-  playerSpecial: (playerStats: PlayerStats) => DamageResult | null;
-  enemyTurn: (playerStats: PlayerStats) => DamageResult | null;
+  startBattle: (enemy: Enemy, playerStats: PlayerStats) => Promise<void>;
+  endBattle: (victory: boolean) => Promise<{ victory: boolean; goldEarned: number }>;
+  playerAttack: (playerStats: PlayerStats) => Promise<DamageResult | null>;
+  playerDefend: () => Promise<number>;
+  playerSpecial: (playerStats: PlayerStats) => Promise<DamageResult | null>;
+  enemyTurn: (playerStats: PlayerStats) => Promise<DamageResult | null>;
   addBattleLog: (entry: BattleLogEntry) => void;
   clearBattleLog: () => void;
-  calculateDamage: (
-    attackerStats: unknown,
-    defenderStats: DefenderStats,
-    baseAttack: number
-  ) => DamageResult;
-  resetCombat: () => void;
+  resetCombat: () => Promise<void>;
 }
 
 const initialCombatState: CombatState = {
@@ -35,124 +26,73 @@ const initialCombatState: CombatState = {
   isActive: false,
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const combatStateFromGame = (game: WebHatcheryGameState): CombatState => {
+  const combat = game.save.state.combat;
+  if (!isRecord(combat)) {
+    return initialCombatState;
+  }
+
+  return combat as unknown as CombatState;
+};
+
+const lastDamageResult = (game: WebHatcheryGameState): DamageResult | null => {
+  const combat = game.save.state.combat;
+  if (!isRecord(combat) || !isRecord(combat.lastDamageResult)) {
+    return null;
+  }
+
+  return combat.lastDamageResult as unknown as DamageResult;
+};
+
 export const useCombatStore = create<CombatStore>((set, get) => ({
   ...initialCombatState,
 
-  startBattle: (enemy, playerStats) => {
-    set({
-      currentEnemy: enemy,
-      playerHealth: playerStats.health,
-      playerMaxHealth: playerStats.health,
-      enemyHealth: enemy.health,
-      enemyMaxHealth: enemy.health,
-      turn: 'player',
-      battleLog: [{ message: `Battle started against ${enemy.name}!`, type: 'info' }],
-      isActive: true,
-    });
+  startBattle: async enemy => {
+    set(combatStateFromGame(await runRobotIntent('start_battle', { enemy })));
   },
 
-  endBattle: victory => {
-    const state = get();
-    const goldEarned = victory && state.currentEnemy ? state.currentEnemy.gold : 0;
+  endBattle: async victory => {
+    const game = await runRobotIntent('end_battle', { victory });
+    set(combatStateFromGame(game));
 
-    set({
-      isActive: false,
-      turn: 'player',
-    });
+    const result = game.save.state.lastBattleResult;
+    if (isRecord(result)) {
+      return {
+        victory: result.victory === true,
+        goldEarned: typeof result.goldEarned === 'number' ? result.goldEarned : 0,
+      };
+    }
 
-    return { victory, goldEarned };
+    return { victory, goldEarned: 0 };
   },
 
-  playerAttack: playerStats => {
-    const state = get();
-    if (state.turn !== 'player' || !state.currentEnemy || !state.isActive) return null;
-
-    const result = state.calculateDamage(playerStats, state.currentEnemy, playerStats.attack);
-    const newEnemyHealth = Math.max(0, state.enemyHealth - result.damage);
-
-    const message = result.critical
-      ? `Critical hit! You dealt ${result.damage} damage to ${state.currentEnemy.name}!`
-      : `You dealt ${result.damage} damage to ${state.currentEnemy.name}!`;
-
-    set(state => ({
-      enemyHealth: newEnemyHealth,
-      turn: newEnemyHealth <= 0 ? 'player' : 'enemy',
-      battleLog: [...state.battleLog, { message, type: 'damage' }],
-    }));
-
-    return result;
+  playerAttack: async () => {
+    const game = await runRobotIntent('player_attack');
+    set(combatStateFromGame(game));
+    return lastDamageResult(game);
   },
 
-  playerDefend: () => {
-    const state = get();
-    if (state.turn !== 'player' || !state.isActive) return 0;
-
-    const healAmount = Math.floor(state.playerMaxHealth * 0.1);
-    const newPlayerHealth = Math.min(state.playerMaxHealth, state.playerHealth + healAmount);
-
-    set(state => ({
-      playerHealth: newPlayerHealth,
-      turn: 'enemy',
-      battleLog: [
-        ...state.battleLog,
-        {
-          message: `You defended and recovered ${healAmount} health!`,
-          type: 'healing',
-        },
-      ],
-    }));
-
-    return healAmount;
+  playerDefend: async () => {
+    const before = get().playerHealth;
+    const game = await runRobotIntent('player_defend');
+    const nextState = combatStateFromGame(game);
+    set(nextState);
+    return Math.max(0, nextState.playerHealth - before);
   },
 
-  playerSpecial: playerStats => {
-    const state = get();
-    if (state.turn !== 'player' || !state.currentEnemy || !state.isActive) return null;
-
-    const result = state.calculateDamage(
-      playerStats,
-      state.currentEnemy,
-      Math.floor(playerStats.attack * 1.5)
-    );
-    const newEnemyHealth = Math.max(0, state.enemyHealth - result.damage);
-
-    set(state => ({
-      enemyHealth: newEnemyHealth,
-      turn: newEnemyHealth <= 0 ? 'player' : 'enemy',
-      battleLog: [
-        ...state.battleLog,
-        {
-          message: `Special attack! You dealt ${result.damage} damage to ${state.currentEnemy?.name}!`,
-          type: 'damage',
-        },
-      ],
-    }));
-
-    return result;
+  playerSpecial: async () => {
+    const game = await runRobotIntent('player_special');
+    set(combatStateFromGame(game));
+    return lastDamageResult(game);
   },
 
-  enemyTurn: playerStats => {
-    const state = get();
-    if (state.turn !== 'enemy' || !state.currentEnemy || !state.isActive) return null;
-
-    const result = state.calculateDamage(
-      state.currentEnemy,
-      playerStats,
-      state.currentEnemy.attack
-    );
-    const newPlayerHealth = Math.max(0, state.playerHealth - result.damage);
-
-    const message = result.critical
-      ? `Critical hit! ${state.currentEnemy.name} dealt ${result.damage} damage to you!`
-      : `${state.currentEnemy.name} dealt ${result.damage} damage to you!`;
-
-    set(state => ({
-      playerHealth: newPlayerHealth,
-      turn: newPlayerHealth <= 0 ? 'enemy' : 'player',
-      battleLog: [...state.battleLog, { message, type: 'damage' }],
-    }));
-
-    return result;
+  enemyTurn: async () => {
+    const game = await runRobotIntent('enemy_turn');
+    set(combatStateFromGame(game));
+    return lastDamageResult(game);
   },
 
   addBattleLog: entry => {
@@ -163,17 +103,7 @@ export const useCombatStore = create<CombatStore>((set, get) => ({
 
   clearBattleLog: () => set({ battleLog: [] }),
 
-  calculateDamage: (attackerStats, defenderStats, baseAttack) => {
-    void attackerStats; // attacker currently doesn't affect damage beyond baseAttack
-    const variance = 1 + (Math.random() - 0.5) * 2 * gameData.game_balance.damage_variance;
-    const criticalHit = Math.random() < gameData.game_balance.critical_hit_chance;
-    const critMultiplier = criticalHit ? 2 : 1;
-
-    let damage = Math.floor(baseAttack * variance * critMultiplier);
-    damage = Math.max(1, damage - defenderStats.defense);
-
-    return { damage, critical: criticalHit };
+  resetCombat: async () => {
+    set(combatStateFromGame(await runRobotIntent('reset_combat')));
   },
-
-  resetCombat: () => set(initialCombatState),
 }));

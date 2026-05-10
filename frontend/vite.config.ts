@@ -1,14 +1,3 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import { createWebHatcheryViteConfig } from '../../tools/shared/frontend/viteConfig';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  base: '/robot_battler/',
-  resolve: {
-    alias: {
-      '@': '/src',
-    },
-  },
-});
+export default createWebHatcheryViteConfig({ slug: 'robot_battler' });

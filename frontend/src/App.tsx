@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGameStore } from './stores/gameStore';
 import { MainMenu } from './pages/MainMenu';
 import { EnemySelection } from './pages/EnemySelection';
@@ -9,7 +9,11 @@ import { NotificationSystem } from './components/ui/NotificationSystem';
 import './styles/index.css';
 
 const App: React.FC = () => {
-  const { currentScreen } = useGameStore();
+  const { currentScreen, initializeBackend } = useGameStore();
+
+  useEffect(() => {
+    void initializeBackend();
+  }, [initializeBackend]);
 
   const renderCurrentScreen = () => {
     switch (currentScreen) {

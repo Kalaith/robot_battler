@@ -20,7 +20,7 @@ export const PartsShop: React.FC = () => {
     { key: 'engines', label: 'Engines', icon: '⚡' },
   ];
 
-  const handlePartAction = (category: ShopCategory, index: number) => {
+  const handlePartAction = async (category: ShopCategory, index: number) => {
     const isOwned = player.ownedParts[category].includes(index);
     const isEquipped = player[category] === index;
     const part = gameData.robot_parts[category][index];
@@ -30,17 +30,15 @@ export const PartsShop: React.FC = () => {
     }
 
     if (isOwned) {
-      // Equip the part
-      equipPart(category, index);
+      await equipPart(category, index);
       addNotification({
         message: `Equipped ${part.name}!`,
         type: 'success',
       });
     } else {
-      // Try to buy the part
-      const success = buyPart(category, index);
+      const success = await buyPart(category, index);
       if (success) {
-        equipPart(category, index);
+        await equipPart(category, index);
         addNotification({
           message: `Bought and equipped ${part.name}!`,
           type: 'success',
@@ -182,7 +180,7 @@ export const PartsShop: React.FC = () => {
               isOwned={player.ownedParts[activeShopCategory].includes(index)}
               isEquipped={player[activeShopCategory] === index}
               canAfford={gold >= part.cost}
-              onAction={() => handlePartAction(activeShopCategory, index)}
+              onAction={() => void handlePartAction(activeShopCategory, index)}
             />
           ))}
         </motion.div>

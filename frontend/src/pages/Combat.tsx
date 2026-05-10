@@ -10,7 +10,7 @@ import { BattleLog } from '../components/game/BattleLog';
 import { Card } from '../components/ui/Card';
 
 export const Combat: React.FC = () => {
-  const { setScreen, getPlayerStats, addGold, addWin } = useGameStore();
+  const { setScreen, getPlayerStats } = useGameStore();
   const {
     playerHealth,
     playerMaxHealth,
@@ -39,7 +39,7 @@ export const Combat: React.FC = () => {
   const playerStats = getPlayerStats();
 
   const handleContinue = useCallback(() => {
-    resetCombat();
+    void resetCombat();
     setBattleResult(null);
     setScreen('main-menu');
   }, [resetCombat, setScreen]);
@@ -49,7 +49,7 @@ export const Combat: React.FC = () => {
     if (turn === 'enemy' && isActive && playerHealth > 0 && enemyHealth > 0) {
       const timer = setTimeout(() => {
         setIsEnemyAnimating(true);
-        enemyTurn(playerStats);
+        void enemyTurn(playerStats);
         setTimeout(() => setIsEnemyAnimating(false), 600);
       }, 1500);
       return () => clearTimeout(timer);
@@ -61,35 +61,31 @@ export const Combat: React.FC = () => {
   useEffect(() => {
     if (isActive && (playerHealth <= 0 || enemyHealth <= 0)) {
       const victory = enemyHealth <= 0;
-      const result = endBattle(victory);
-      setBattleResult(result);
+      void endBattle(victory).then((result: { victory: boolean; goldEarned: number }) => {
+        setBattleResult(result);
 
-      if (victory) {
-        addGold(result.goldEarned);
-        addWin();
-        addNotification({
-          message: `Victory! You earned ${result.goldEarned} gold!`,
-          type: 'success',
-        });
-      } else {
-        addNotification({
-          message: 'Defeat! Try upgrading your robot.',
-          type: 'error',
-        });
-      }
+        if (victory) {
+          addNotification({
+            message: `Victory! You earned ${result.goldEarned} gold!`,
+            type: 'success',
+          });
+        } else {
+          addNotification({
+            message: 'Defeat! Try upgrading your robot.',
+            type: 'error',
+          });
+        }
 
-      // Auto-redirect after 3 seconds
-      setTimeout(() => {
-        handleContinue();
-      }, 3000);
+        setTimeout(() => {
+          handleContinue();
+        }, 3000);
+      });
     }
   }, [
     playerHealth,
     enemyHealth,
     isActive,
     endBattle,
-    addGold,
-    addWin,
     addNotification,
     handleContinue,
   ]);
@@ -98,21 +94,21 @@ export const Combat: React.FC = () => {
     if (turn !== 'player' || !isActive) return;
 
     setIsPlayerAnimating(true);
-    playerAttack(playerStats);
+    void playerAttack(playerStats);
     setTimeout(() => setIsPlayerAnimating(false), 600);
   };
 
   const handlePlayerDefend = () => {
     if (turn !== 'player' || !isActive) return;
 
-    playerDefend();
+    void playerDefend();
   };
 
   const handlePlayerSpecial = () => {
     if (turn !== 'player' || !isActive || isSpecialOnCooldown) return;
 
     setIsPlayerAnimating(true);
-    playerSpecial(playerStats);
+    void playerSpecial(playerStats);
     setSpecialCooldown(true);
 
     setTimeout(() => {
